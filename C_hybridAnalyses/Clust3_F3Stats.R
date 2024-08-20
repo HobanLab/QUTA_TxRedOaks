@@ -66,3 +66,5 @@ f4(data=Clust3_seOnly_R98_f2Arr, pop1 = '6628', pop2='6553', pop3='6556', pop4='
 f4(data=Clust3_seOnly_R98_f2Arr, pop1 = '410', pop2='416', pop3='180', pop4='896')
 # So, it's difficult to interpret the magnitude of 4 values...
 
+# %%% EXPLORING ADMIXTURE GRAPHS %%% ----
+find_graphs(Clust3_seOnly_R98_f2Arr, numadmix = 3, verbose = TRUE)
