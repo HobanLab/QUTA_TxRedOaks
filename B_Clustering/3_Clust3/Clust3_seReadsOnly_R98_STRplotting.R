@@ -72,7 +72,7 @@ plot.singleK_H <- function(kList, kColors, barWidth=1, title=NULL, popNamesPrese
   for(i in 1:length(kList)){
     if(i==1){
       # Initial barplot
-      barplot(kList[,i], ylim=c(0,(nrow(kList)+20)), horiz=T, beside=F, 
+      barplot(kList[,i], ylim=c(0,(nrow(kList)+20)), xlim=c(0,1.0), horiz=T, beside=F, 
               col=kColors[i], axisnames=T, space=0.2, yaxt= "n", main=title, width=barWidth)
       off.value <- kList[,i]
     }else{
@@ -208,7 +208,6 @@ QUTA_clust3_sampleNames <- sub('SYST-MOR-000','', QUTA_clust3_sampleNames)
 QUTA_clust3_sampleNames <- sub('OAK-MOR-00','', QUTA_clust3_sampleNames)
 QUTA_clust3_sampleNames <- sub('OAK-MOR-000','', QUTA_clust3_sampleNames)
 QUTA_clust3_sampleNames <- sub('OAK-UMN-000','', QUTA_clust3_sampleNames)
-
 # Group labels for clust3
 clust3_labels <- c('"gravesii"','"grav. x emoryi"','"emoryi"','"canbyi"',
                    '"hypo."','"grav. x hypo."')
@@ -234,7 +233,6 @@ Xpos <- Plot.AllK(QUTA_clust3_clumppDir, Ks=2:4, QUTA_colors, sampleNames = QUTA
 text(x=clust3_labelPositions_multipleK, y=-0.06, srt=35, adj=1, xpd=TRUE, labels=clust3_labels, cex=1.2)
 # Add horizontal bar, indicating tardifolia individuals
 axis(1, at=c(79,88.3), labels = FALSE, line=0.4, lwd = 2, lwd.ticks = 0)
-
 # Plot K values 5 through 7
 Xpos <- Plot.AllK(QUTA_clust3_clumppDir, Ks=5:7, QUTA_colors, sampleNames = QUTA_clust3_sampleNames, 
               majorClust = TRUE, tickMarks=clust3_tickMarks_multipleK, popNamesPresent = FALSE)
@@ -250,7 +248,6 @@ par(mar = c(8,1.2,0.5,0.5) + 0.1, oma = c(0,0.2,0,0), mgp = c(1,1,0))
 # Label and tick mark positions (K=4)
 clust3_labelPositions_K4 <- c(11, 28, 46.3, 60.2, 75, 87.5)
 clust3_tickMarks_K4 <- c(0,18,35,54,65,82.8)
-
 # Plot K = 4 on its own, returning x positions of vertical bars
 Xpos <- Plot.K(QUTA_clust3_clumppDir, 4, QUTA_colors, mainTitle = "",  majorClust=TRUE, 
                popNamesPresent=FALSE, sampleNames = QUTA_clust3_sampleNames, showSampleNames = TRUE)
@@ -306,7 +303,6 @@ QUTA_clust3_sampleNamesAndDets <-
 QUTA_clust3_sampleNamesAndDets <- unname(unlist(QUTA_clust3_sampleNamesAndDets))
 # Replace commas with semicolons
 QUTA_clust3_sampleNamesAndDets <- sub(',',' ; ', QUTA_clust3_sampleNamesAndDets)
-
 # Specify graphing parameters to plot single K value horizontally
 dev.off()
 par(mar = c(2,0.2,24,12) + 0.1, oma = c(0,0.2,1.2,0), mgp = c(1,1,0))
@@ -320,19 +316,13 @@ mtext('Single Reads Only; R98, 9,954 loci; Third STRUCTURE Run', line=22)
 # Plot tick marks (horizontally)
 axis(4, at=clust3_tickMarks_K4_H, labels = FALSE, lwd.ticks = 3, tck=-0.01, xpd=TRUE)
 axis(4, at=clust3_tickMarks_K4_H, labels = FALSE, lwd.ticks = 3, tck=1.005, xpd=TRUE)
-
 # Add sample names along the graph (on the right)
 text(x=1.005, y=Ypos, srt=0, adj=0, xpd=TRUE, labels=QUTA_clust3_sampleNamesAndDets, cex=0.78)
 
 # %%%% SCY-HYPO-CAN-TAR DATASET %%%% ----
-# %%%% R98 ----
 # %%%% VARIABLES ----
-# Colors for different clusters. Rearranged to (partially) match Clust2 patterns
+# Colors for different clusters
 QUTA_colors <- brewer.pal(12, "Paired")
-QUTA_colors <- QUTA_colors[c(2,1,3:12)]
-# Variable file path: directory containing all CLUMPP outputs to read in
-QUTA_ScyHypoCanTar_clumppDir <- 
-  "/RAID1/QUTA_TX_RedOaks/Clustering/STRUCTURE/ScyHypoCanTar/pop_R98/Output/CLUMPAK/Output/mainPipeline/"
 # Read in text file of sample names
 QUTA_ScyHypoCanTar_sampleNames <- 
   as.list(read.table("/RAID1/QUTA_TX_RedOaks/Clustering/STRUCTURE/ScyHypoCanTar/pop_R98/ScyHypoCanTar_sampleNames.txt", 
@@ -346,17 +336,64 @@ QUTA_ScyHypoCanTar_sampleNames <- sub('OAK-MOR-000','', QUTA_ScyHypoCanTar_sampl
 QUTA_ScyHypoCanTar_sampleNames <- sub('OAK-UMN-000','', QUTA_ScyHypoCanTar_sampleNames)
 # Group labels for ScyHypoCanTar
 ScyHypoCanTar_labels <- c('canbyi','miqui.','hypo.','scytophylla','grav x hypo','tardifolia')
-
-# %%%% PLOTTING %%%% ----
-# %%%% ALL K VALUES ----
 # Label and tick mark positions (Multiple K values)
 ScyHypoCanTar_labelPositions_multipleK <- c(4,9,16.5,24,30,37)
 ScyHypoCanTar_tickMarks_multipleK <- c(0,6.3,10.5,20,26.3,32.6,42)
+
+# %%%% PLOTTING %%%% ----
+# %%%% R98 ----
+# Variable file path: directory containing all CLUMPP outputs to read in
+QUTA_ScyHypoCanTar_R98_clumppDir <- 
+  "/RAID1/QUTA_TX_RedOaks/Clustering/STRUCTURE/ScyHypoCanTar/pop_R98/Output/CLUMPAK/Output/mainPipeline/"
+# %%%% K VALUES 2--6 ----
 # Plot results from all K values
-Xpos <- Plot.AllK(QUTA_ScyHypoCanTar_clumppDir, Ks=2:6, QUTA_colors, sampleNames = QUTA_ScyHypoCanTar_sampleNames, 
-                  majorClust = TRUE, tickMarks = ScyHypoCanTar_tickMarks_multipleK, popNamesPresent = FALSE)
+Xpos <- 
+  Plot.AllK(QUTA_ScyHypoCanTar_R98_clumppDir, Ks=2:6, QUTA_colors, sampleNames = QUTA_ScyHypoCanTar_sampleNames, 
+            majorClust = TRUE, tickMarks = ScyHypoCanTar_tickMarks_multipleK, popNamesPresent = FALSE)
 # Add group labels
 text(x=ScyHypoCanTar_labelPositions_multipleK, y=-0.08, srt=35, adj=1, xpd=TRUE, labels=ScyHypoCanTar_labels, cex=1.2)
-# Add horizontal bar, indicating tardifolia individuals
-axis(1, at=c(79,88.3), labels = FALSE, line=0.4, lwd = 2, lwd.ticks = 0)
+
 # %%%% R97_WL10K ----
+# Variable file path: directory containing all CLUMPP outputs to read in
+QUTA_ScyHypoCanTar_R97WL10K_clumppDir <- 
+  "/RAID1/QUTA_TX_RedOaks/Clustering/STRUCTURE/ScyHypoCanTar/pop_R97_WL10K/Output/CLUMPAK/Output/mainPipeline/"
+# K VALUES 2--5 ----
+Xpos <- 
+  Plot.AllK(QUTA_ScyHypoCanTar_R97WL10K_clumppDir, Ks=2:5, QUTA_colors, sampleNames = QUTA_ScyHypoCanTar_sampleNames, 
+            majorClust = TRUE, tickMarks = ScyHypoCanTar_tickMarks_multipleK, popNamesPresent = FALSE)
+# Add group labels
+text(x=ScyHypoCanTar_labelPositions_multipleK, y=-0.08, srt=35, adj=1, xpd=TRUE, labels=ScyHypoCanTar_labels, cex=1.2)
+# K VALUES 6--8 ----
+Xpos <- 
+  Plot.AllK(QUTA_ScyHypoCanTar_R97WL10K_clumppDir, Ks=6:8, QUTA_colors, sampleNames = QUTA_ScyHypoCanTar_sampleNames, 
+            majorClust = TRUE, tickMarks = ScyHypoCanTar_tickMarks_multipleK, popNamesPresent = FALSE)
+# Add group labels
+text(x=ScyHypoCanTar_labelPositions_multipleK, y=-0.08, srt=35, adj=1, xpd=TRUE, labels=ScyHypoCanTar_labels, cex=1.2)
+# K=6 VALUES, WITH SAMPLE NAMES, HORIZONTALLY ----
+# Tick mark positions for K=6, horizontal
+ScyHypoCanTar_tickMarks_K6_H <- c(0,15,24,45.7,60.4,74.7)
+# Read in text file of sample names and dets
+QUTA_ScyHypoCanTar_sampleNamesAndDets <- 
+  as.list(read.csv2("/RAID1/QUTA_TX_RedOaks/Clustering/STRUCTURE/ScyHypoCanTar/pop_R97_WL10K/ScyHypoCanTar_sampleNamesAndDets.csv", 
+                    stringsAsFactors = FALSE, header = TRUE))
+# Reformat sample names as a vector
+QUTA_ScyHypoCanTar_sampleNamesAndDets <- unlist(unname(QUTA_ScyHypoCanTar_sampleNamesAndDets))
+# Put asterisks next to the sample names with higher levels of missing data (>10%)
+QUTA_ScyHypoCanTar_sampleNamesAndDets[[8]] <- "6235*, hypoxantha"
+QUTA_ScyHypoCanTar_sampleNamesAndDets[[39]] <- "6654*, hypoxantha x gravesii"
+QUTA_ScyHypoCanTar_sampleNamesAndDets[[40]] <- "6656*, tardifolia"
+# Specify graphing parameters to plot single K value horizontally
+dev.off()
+par(mar = c(2.1,0.6,9.8,11) + 0.1, oma = c(0,0.2,1.2,0), mgp = c(1,1,0))
+# Plot K = 6 on its own, horizontally
+Ypos <- Plot.K_H(QUTA_ScyHypoCanTar_R97WL10K_clumppDir, 6, QUTA_colors, majorClust=TRUE, 
+                 popNamesPresent=FALSE, sampleNames = QUTA_ScyHypoCanTar_sampleNames, 
+                 showSampleNames = TRUE, hFlag=TRUE, barWidth = 2)
+# Add title
+title('QUTA_TxRedOaks: ScyHypoCanTar Dataset: K=6', line = 9)
+mtext('Single Reads Only; R97, 10,000 loci (Whitelist)', line=8)
+# Plot tick marks (horizontally)
+axis(4, at=ScyHypoCanTar_tickMarks_K6_H, labels = FALSE, lwd.ticks = 2.5, tck=-0.03, xpd=TRUE)
+axis(4, at=ScyHypoCanTar_tickMarks_K6_H, labels = FALSE, lwd.ticks = 2.5, tck=1.005, xpd=TRUE)
+# Add sample names along the graph (on the right)
+text(x=1.005, y=Ypos, srt=0, adj=0, xpd=TRUE, labels=QUTA_ScyHypoCanTar_sampleNamesAndDets, cex=0.78)

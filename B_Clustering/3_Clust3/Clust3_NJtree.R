@@ -12,33 +12,68 @@ library(seqinr)
 library(rdiversity)
 library(vcfR)
 
-QUTA_TRO_wd <- '/RAID1/QUTA_TX_RedOaks/Genotyping/SNP_Calling/Output/Clust3_seOnly/pop_R98/'
-setwd(QUTA_TRO_wd)
-
-# USING ADEGENET ----
+# CLUST3 %%%% ----
+QUTA_Clust3_wd <- '/RAID1/QUTA_TX_RedOaks/Genotyping/SNP_Calling/Output/Clust3_seOnly/pop_R98/'
+setwd(QUTA_Clust3_wd)
 # Read in genind file
-QUTA_TRO_gen <- read.genepop("populations.snps.gen")
+QUTA_Clust3_gen <- read.genepop("populations.snps.gen")
 # Convert genind file to data.frame
-QUTA_TRO_df <- genind2df(QUTA_TRO_gen)
+QUTA_Clust3_df <- genind2df(QUTA_Clust3_gen)
 # Convert data.frame to genlight object
-QUTA_TRO_genLight <- as.genlight(QUTA_TRO_df)
+QUTA_Clust3_genLight <- as.genlight(QUTA_Clust3_df)
 # Build a genetic distance matrix from the genlight object
-QUTA_TRO_distMat <- dist(QUTA_TRO_genLight)
+QUTA_Clust3_distMat <- dist(QUTA_Clust3_genLight)
 # Build a NJ tree from the genetic distance matrix
-QUTA_TRO_njTree <- nj(QUTA_TRO_distMat)
+QUTA_Clust3_njTree <- nj(QUTA_Clust3_distMat)
 # Rename the phylognetic tree, to make more discernible
-QUTA_TRO_njTree$tip.label <- sub('SYST-MOR-000','',QUTA_TRO_njTree$tip.label)
-QUTA_TRO_njTree$tip.label <- sub('OAK-MOR-00','',QUTA_TRO_njTree$tip.label)
-QUTA_TRO_njTree$tip.label <- sub('OAK-MOR-000','',QUTA_TRO_njTree$tip.label)
-QUTA_TRO_njTree$tip.label <- sub('OAK-UMN-000','',QUTA_TRO_njTree$tip.label)
+QUTA_Clust3_njTree$tip.label <- sub('SYST-MOR-000','',QUTA_Clust3_njTree$tip.label)
+QUTA_Clust3_njTree$tip.label <- sub('OAK-MOR-00','',QUTA_Clust3_njTree$tip.label)
+QUTA_Clust3_njTree$tip.label <- sub('OAK-MOR-000','',QUTA_Clust3_njTree$tip.label)
+QUTA_Clust3_njTree$tip.label <- sub('OAK-UMN-000','',QUTA_Clust3_njTree$tip.label)
 # Plot
 par(mar=c(1,1,2,1)+0.1)
-plot(QUTA_TRO_njTree, 'phylo', main='Clust3 NJ Tree: Abbreviated Sample Names')
-
-# Read in a CSV listing sample names in the order indicated in QUTA_TRO_njTree$tip.label
+plot(QUTA_Clust3_njTree, 'phylo', main='Clust3 NJ Tree: Abbreviated Sample Names')
+# Read in a CSV listing sample names in the order indicated in QUTA_Clust3_njTree$tip.label
 clustNames <- read.csv2('/home/akoontz/Documents/QUTA_TxRedOaks/Code/clustIDs_withQUTA_numOrdered.csv', 
                         header = TRUE, sep = ",")[,2]
 # Rename and plot
-QUTA_TRO_njTree$tip.label <- clustNames
+QUTA_Clust3_njTree$tip.label <- clustNames
 par(mar=c(1,1,2,1)+0.1)
-plot(QUTA_TRO_njTree, 'phylo', main='Clust3 NJ Tree: K4 Cluster Identities')
+plot(QUTA_Clust3_njTree, 'phylo', main='Clust3 NJ Tree: K4 Cluster Identities')
+
+# SCY-HYPO-CAN-TAR %%%% ----
+QUTA_ScyHypoCanTar_wd <- '/RAID1/QUTA_TX_RedOaks/Genotyping/SNP_Calling/Output/ScyHypoCanTar_seOnly/pop_R97_WL10K/'
+setwd(QUTA_ScyHypoCanTar_wd)
+# Read in genind file
+QUTA_ScyHypoCanTar_gen <- read.genepop("populations.snps.gen")
+# Convert genind file to data.frame
+QUTA_ScyHypoCanTar_df <- genind2df(QUTA_ScyHypoCanTar_gen)
+# Convert data.frame to genlight object
+QUTA_ScyHypoCanTar_genLight <- as.genlight(QUTA_ScyHypoCanTar_df)
+# Build a genetic distance matrix from the genlight object
+QUTA_ScyHypoCanTar_distMat <- dist(QUTA_ScyHypoCanTar_genLight)
+# Build a NJ tree from the genetic distance matrix
+QUTA_ScyHypoCanTar_njTree <- nj(QUTA_ScyHypoCanTar_distMat)
+# Rename the phylognetic tree, to make more discernible
+QUTA_ScyHypoCanTar_njTree$tip.label <- sub('SYST-MOR-000','',QUTA_ScyHypoCanTar_njTree$tip.label)
+QUTA_ScyHypoCanTar_njTree$tip.label <- sub('OAK-MOR-000','',QUTA_ScyHypoCanTar_njTree$tip.label)
+QUTA_ScyHypoCanTar_njTree$tip.label <- sub('OAK-MOR-00','',QUTA_ScyHypoCanTar_njTree$tip.label)
+QUTA_ScyHypoCanTar_njTree$tip.label <- sub('OAK-UMN-000','',QUTA_ScyHypoCanTar_njTree$tip.label)
+# Plot
+par(mar=c(1,1,2,1)+0.1)
+plot(QUTA_ScyHypoCanTar_njTree, 'phylo', main='ScyHypoCanTar NJ Tree: Abbreviated Sample Names')
+
+# CLUSTER IDENTITIES
+# Make a copy of the original tree
+QUTA_ScyHypoCanTar_K6clust_njTree <- QUTA_ScyHypoCanTar_njTree
+# Read in a TSV listing sample names/cluster IDs in the order indicated in QUTA_ScyHypoCanTar_njTree$tip.label
+clustNames <- 
+  read.table('/home/akoontz/Documents/QUTA_TxRedOaks/Code/B_Clustering/3_Clust3/ScyHypoCanTar_SampleList_K6clustIDs.tsv',
+             sep = '\t', header = TRUE)
+# Replace sample names with abbreviated sample names
+clustNames[,1] <- QUTA_ScyHypoCanTar_njTree$tip.label
+# Rename and plot
+QUTA_ScyHypoCanTar_K6clust_njTree$tip.label <- clustNames[,2]
+QUTA_ScyHypoCanTar_K6clust_njTree$tip.label <- paste0(clustNames[,1],'; ',clustNames[,2])
+par(mar=c(1,1,2,1)+0.1)
+plot(QUTA_ScyHypoCanTar_K6clust_njTree, 'phylo', main='ScyHypoCanTar NJ Tree: K6 Cluster Identities')
