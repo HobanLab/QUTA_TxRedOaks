@@ -346,7 +346,6 @@ ScyHypoCanTar_tickMarks_multipleK <- c(0,6.3,10.5,20,26.3,32.6,42)
 QUTA_ScyHypoCanTar_R98_clumppDir <- 
   "/RAID1/QUTA_TX_RedOaks/Clustering/STRUCTURE/ScyHypoCanTar/pop_R98/Output/CLUMPAK/Output/mainPipeline/"
 # %%%% K VALUES 2--6 ----
-# Plot results from all K values
 Xpos <- 
   Plot.AllK(QUTA_ScyHypoCanTar_R98_clumppDir, Ks=2:6, QUTA_colors, sampleNames = QUTA_ScyHypoCanTar_sampleNames, 
             majorClust = TRUE, tickMarks = ScyHypoCanTar_tickMarks_multipleK, popNamesPresent = FALSE)
@@ -357,6 +356,12 @@ text(x=ScyHypoCanTar_labelPositions_multipleK, y=-0.08, srt=35, adj=1, xpd=TRUE,
 # Variable file path: directory containing all CLUMPP outputs to read in
 QUTA_ScyHypoCanTar_R97WL10K_clumppDir <- 
   "/RAID1/QUTA_TX_RedOaks/Clustering/STRUCTURE/ScyHypoCanTar/pop_R97_WL10K/Output/CLUMPAK/Output/mainPipeline/"
+# ALL K VALUES (2--8) ----
+Xpos <- 
+  Plot.AllK(QUTA_ScyHypoCanTar_R97WL10K_clumppDir, Ks=2:8, QUTA_colors, sampleNames = QUTA_ScyHypoCanTar_sampleNames, 
+            majorClust = TRUE, tickMarks = ScyHypoCanTar_tickMarks_multipleK, popNamesPresent = FALSE)
+# Add group labels
+text(x=ScyHypoCanTar_labelPositions_multipleK, y=-0.08, srt=35, adj=1, xpd=TRUE, labels=ScyHypoCanTar_labels, cex=1.2)
 # K VALUES 2--5 ----
 Xpos <- 
   Plot.AllK(QUTA_ScyHypoCanTar_R97WL10K_clumppDir, Ks=2:5, QUTA_colors, sampleNames = QUTA_ScyHypoCanTar_sampleNames, 
@@ -369,9 +374,9 @@ Xpos <-
             majorClust = TRUE, tickMarks = ScyHypoCanTar_tickMarks_multipleK, popNamesPresent = FALSE)
 # Add group labels
 text(x=ScyHypoCanTar_labelPositions_multipleK, y=-0.08, srt=35, adj=1, xpd=TRUE, labels=ScyHypoCanTar_labels, cex=1.2)
-# K=6 VALUES, WITH SAMPLE NAMES, HORIZONTALLY ----
+# HORIZONTAL STRUCTURE PLOTS ----
 # Tick mark positions for K=6, horizontal
-ScyHypoCanTar_tickMarks_K6_H <- c(0,15,24,45.7,60.4,74.7)
+ScyHypoCanTar_tickMarks_H <- c(0,15,24,45.7,60.4,74.7)
 # Read in text file of sample names and dets
 QUTA_ScyHypoCanTar_sampleNamesAndDets <- 
   as.list(read.csv2("/RAID1/QUTA_TX_RedOaks/Clustering/STRUCTURE/ScyHypoCanTar/pop_R97_WL10K/ScyHypoCanTar_sampleNamesAndDets.csv", 
@@ -384,16 +389,31 @@ QUTA_ScyHypoCanTar_sampleNamesAndDets[[39]] <- "6654*, hypoxantha x gravesii"
 QUTA_ScyHypoCanTar_sampleNamesAndDets[[40]] <- "6656*, tardifolia"
 # Specify graphing parameters to plot single K value horizontally
 dev.off()
-par(mar = c(2.1,0.6,9.8,11) + 0.1, oma = c(0,0.2,1.2,0), mgp = c(1,1,0))
+par(mar = c(2.1,0.6,12.6,11) + 0.1, oma = c(0,0.2,1.2,0), mgp = c(1,1,0))
+# K=3 ----
+# Plot K = 6 on its own, horizontally
+Ypos <- Plot.K_H(QUTA_ScyHypoCanTar_R97WL10K_clumppDir, 3, QUTA_colors, majorClust=TRUE, 
+                 popNamesPresent=FALSE, sampleNames = QUTA_ScyHypoCanTar_sampleNames, 
+                 showSampleNames = TRUE, hFlag=TRUE, barWidth = 2)
+# Add title
+title('QUTA_TxRedOaks: ScyHypoCanTar Dataset: K=3', line = 11.9)
+mtext('Single Reads Only; R97, 10,000 loci (Whitelist)', line=11)
+# Plot tick marks (horizontally)
+axis(4, at=ScyHypoCanTar_tickMarks_H, labels = FALSE, lwd.ticks = 2.5, tck=-0.03, xpd=TRUE)
+axis(4, at=ScyHypoCanTar_tickMarks_H, labels = FALSE, lwd.ticks = 2.5, tck=1.005, xpd=TRUE)
+# Add sample names along the graph (on the right)
+text(x=1.005, y=Ypos, srt=0, adj=0, xpd=TRUE, labels=QUTA_ScyHypoCanTar_sampleNamesAndDets, cex=0.78)
+
+# K=6 ----
 # Plot K = 6 on its own, horizontally
 Ypos <- Plot.K_H(QUTA_ScyHypoCanTar_R97WL10K_clumppDir, 6, QUTA_colors, majorClust=TRUE, 
                  popNamesPresent=FALSE, sampleNames = QUTA_ScyHypoCanTar_sampleNames, 
                  showSampleNames = TRUE, hFlag=TRUE, barWidth = 2)
 # Add title
-title('QUTA_TxRedOaks: ScyHypoCanTar Dataset: K=6', line = 9)
-mtext('Single Reads Only; R97, 10,000 loci (Whitelist)', line=8)
+title('QUTA_TxRedOaks: ScyHypoCanTar Dataset: K=6', line = 11.9)
+mtext('Single Reads Only; R97, 10,000 loci (Whitelist)', line=11)
 # Plot tick marks (horizontally)
-axis(4, at=ScyHypoCanTar_tickMarks_K6_H, labels = FALSE, lwd.ticks = 2.5, tck=-0.03, xpd=TRUE)
-axis(4, at=ScyHypoCanTar_tickMarks_K6_H, labels = FALSE, lwd.ticks = 2.5, tck=1.005, xpd=TRUE)
+axis(4, at=ScyHypoCanTar_tickMarks_H, labels = FALSE, lwd.ticks = 2.5, tck=-0.03, xpd=TRUE)
+axis(4, at=ScyHypoCanTar_tickMarks_H, labels = FALSE, lwd.ticks = 2.5, tck=1.005, xpd=TRUE)
 # Add sample names along the graph (on the right)
 text(x=1.005, y=Ypos, srt=0, adj=0, xpd=TRUE, labels=QUTA_ScyHypoCanTar_sampleNamesAndDets, cex=0.78)
