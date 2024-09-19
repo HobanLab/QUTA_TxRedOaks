@@ -13,10 +13,10 @@ library(parallel)
 
 # %%% VARIABLES %%% ----
 # Read in the functions used to convert a phylip file to a CF table
-QUTA_SNPs2CF_wd <- '/RAID1/QUTA_TX_RedOaks/HybridAnalyses/SNPs2CF/functions_v1.6.R'
+QUTA_SNPs2CF_wd <- '/RAID1/QUTA_TX_RedOaks/HybridAnalyses/GH_Repo_SNPs2CF/functions_v1.6.R'
 source(QUTA_SNPs2CF_wd)
 # Set working directory to folder containing phylip file
-QUTA_SNaQ_wd <- '/RAID1/QUTA_TX_RedOaks/HybridAnalyses/SNaQ/'
+QUTA_SNaQ_wd <- '/RAID1/QUTA_TX_RedOaks/HybridAnalyses/SNPs2CF/'
 setwd(QUTA_SNaQ_wd)
 # Set up relevant cores 
 num_cores <- detectCores() - 4 
@@ -25,7 +25,7 @@ num_cores <- detectCores() - 4
 INPUT_VCF <- 'input/QUTA_Clust3_SNaQ1.vcf'
 OUTPUT_phylip <- 'input/QUTA_Clust3_SNaQ1.phylip'
 INPUT_map <- 'input/QUTA_Clust3_SNaQ1_Imap.txt'
-OUTPUT_CFtable <- 'output/Clust3_SNaQ1_CFtable.csv'
+OUTPUT_CFtable <- 'output/Clust3_SNaQ1_CFtable_8sp.csv'
 
 # %%% CONVERT VCF TO PHYLIP ----
 # This command only needs to be run once; once run, a phylip file will be written to disk. This
