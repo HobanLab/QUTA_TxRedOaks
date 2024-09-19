@@ -77,3 +77,25 @@ QUTA_ScyHypoCanTar_K6clust_njTree$tip.label <- clustNames[,2]
 QUTA_ScyHypoCanTar_K6clust_njTree$tip.label <- paste0(clustNames[,1],'; ',clustNames[,2])
 par(mar=c(1,1,2,1)+0.1)
 plot(QUTA_ScyHypoCanTar_K6clust_njTree, 'phylo', main='ScyHypoCanTar NJ Tree: K6 Cluster Identities')
+
+# DINSTINCT PHYLO ENTITIES SUBSET %%%% ----
+QUTA_SNaQ1_wd <- '/RAID1/QUTA_TX_RedOaks/Genotyping/SNP_Calling/Output/Clust3_seOnly/SNaQ1/'
+setwd(QUTA_SNaQ1_wd)
+# Read in genind file
+QUTA_SNaQ1_gen <- read.genepop("populations.snps.gen")
+# Convert genind file to data.frame
+QUTA_SNaQ1_df <- genind2df(QUTA_SNaQ1_gen)
+# Convert data.frame to genlight object
+QUTA_SNaQ1_genLight <- as.genlight(QUTA_SNaQ1_df)
+# Build a genetic distance matrix from the genlight object
+QUTA_SNaQ1_distMat <- dist(QUTA_SNaQ1_genLight)
+# Build a NJ tree from the genetic distance matrix
+QUTA_SNaQ1_njTree <- nj(QUTA_SNaQ1_distMat)
+# Rename the phylognetic tree, to make more discernible
+QUTA_SNaQ1_njTree$tip.label <- sub('SYST-MOR-000','',QUTA_SNaQ1_njTree$tip.label)
+QUTA_SNaQ1_njTree$tip.label <- sub('OAK-MOR-000','',QUTA_SNaQ1_njTree$tip.label)
+QUTA_SNaQ1_njTree$tip.label <- sub('OAK-MOR-00','',QUTA_SNaQ1_njTree$tip.label)
+QUTA_SNaQ1_njTree$tip.label <- sub('OAK-UMN-000','',QUTA_SNaQ1_njTree$tip.label)
+# Plot
+par(mar=c(1,1,2,1)+0.1)
+plot(QUTA_SNaQ1_njTree, 'phylo', main='SNaQ1 NJ Tree: Abbreviated Sample Names')
