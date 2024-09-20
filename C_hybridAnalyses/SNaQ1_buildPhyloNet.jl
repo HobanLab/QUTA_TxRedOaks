@@ -12,12 +12,25 @@
 # Read in necessary packages
 using PhyloNetworks
 using PhyloPlots
+using Distributed
+# Generate multiple nodes, and load PhyloNetworks onto those nodes
+addprocs(10)
+@everywhere using PhyloNetworks 
 
-# Read in the table of concordance factors
-Clust3_CF_8sp = readTableCF("Input/Clust3_SNaQ1_CFtable_8sp.csv")
-# Specify the starting topology (a Newick text file)
-Clust3_Tree = readTopology("Input/SNaQ1_PhyloEnts.tre")
+# Specify filepath to table of concordance factors, and read in
+Clust3_CF_8sp_filepath = "/RAID1/QUTA_TX_RedOaks/HybridAnalyses/SNaQ1/Input/Clust3_SNaQ1_CFtable_8sp.csv"
+Clust3_CF_8sp = readTableCF(Clust3_CF_8sp_filepath)
+# Specify filepath to the starting topology (a Newick text file), and read in
+Clust3_Tree_filepath = "/RAID1/QUTA_TX_RedOaks/HybridAnalyses/SNaQ1/Input/SNaQ1_PhyloEnts.tre"
+Clust3_Tree = readTopology(Clust3_Tree_filepath)
+# Specify output directory
+SNaQ1_Out = "/RAID1/QUTA_TX_RedOaks/HybridAnalyses/SNaQ1/Output/Net0_SNaQ1_8sp"
 # Call SNaQ to build the initial phylogenetic network. The hmax argument is set to 0 because we're initially 
 # exploring no hybridization events. The default for SNaQ is to use 10 runs.
-Net0 = snaq!(Clust3_Tree,  Clust3_CF_8sp, hmax=0, filename="Output/Net0_SNaQ1_8sp", seed=123)
+SNaQ1_Net0 = snaq!(Clust3_Tree,  Clust3_CF_8sp, hmax=0, filename=SNaQ1_Out, seed=123)
 
+# Plot the resulting phylogenetic network and save to a PDF file
+using RCall
+R"pdf"("Plot-Net0.pdf", width=5, height=3);
+plot(SNaQ1_Net0, :R);
+R"dev.off()";
