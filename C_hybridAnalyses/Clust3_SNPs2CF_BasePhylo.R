@@ -18,7 +18,7 @@ library(parallel)
 
 # %%% VARIABLES %%% ----
 # Read in the functions used to convert a phylip file to a CF table
-QUTA_SNPs2CF_wd <- '/RAID1/QUTA_TX_RedOaks/HybridAnalyses/GH_Repo_SNPs2CF/functions_v1.6.R'
+QUTA_SNPs2CF_wd <- '/RAID1/QUTA_TX_RedOaks/HybridAnalyses/SNPs2CF/GH_Repo_SNPs2CF/functions_v1.6.R'
 source(QUTA_SNPs2CF_wd)
 # Set working directory to folder containing phylip file
 QUTA_SNaQ_wd <- '/RAID1/QUTA_TX_RedOaks/HybridAnalyses/SNPs2CF/BasePhylo/'

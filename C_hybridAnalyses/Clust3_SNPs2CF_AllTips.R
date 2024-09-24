@@ -18,13 +18,13 @@ library(parallel)
 
 # %%% VARIABLES %%% ----
 # Read in the functions used to convert a phylip file to a CF table
-QUTA_SNPs2CF_wd <- '/RAID1/QUTA_TX_RedOaks/HybridAnalyses/GH_Repo_SNPs2CF/functions_v1.6.R'
+QUTA_SNPs2CF_wd <- '/RAID1/QUTA_TX_RedOaks/HybridAnalyses/SNPs2CF/GH_Repo_SNPs2CF/functions_v1.6.R'
 source(QUTA_SNPs2CF_wd)
 # Set working directory to folder containing phylip file
 QUTA_SNaQ_wd <- '/RAID1/QUTA_TX_RedOaks/HybridAnalyses/SNPs2CF/AllTips/'
 setwd(QUTA_SNaQ_wd)
 # Set up relevant cores 
-num_cores <- detectCores() - 4 
+num_cores <- detectCores() - 12 
 
 # Specify filepaths to input phylip and map files, and to output CSV
 INPUT_VCF <- 'Input/QUTA_Clust3_SNPs2CF_AllTips.vcf'
@@ -35,7 +35,7 @@ OUTPUT_CFtable <- 'Output/Clust3_SNPs2CF_AllTips_CFtable.csv'
 # %%% CONVERT VCF TO PHYLIP ----
 # This command only needs to be run once; once run, a phylip file will be written to disk. This
 # phylip file will be the input for the SNPs2CF command (see below). 
-vcf2phylip(vcf.name=INPUT_VCF, total.SNPs=71483, random.phase=T, 
+vcf2phylip(vcf.name=INPUT_VCF, total.SNPs=86142, random.phase=T, 
            output.name=OUTPUT_phylip,  cores=num_cores)
 # NOTE: converting the VCF to a phylip file leads to 2 lines per individual in the PHYLIP 
 # file to be written (one for each haplotype, labeled _0 and _1). The map file therefore also
@@ -50,7 +50,9 @@ print(paste0('%%% SNPs2CF START: ', startTime))
 # Because the between.sp.only command is set to TRUE, all of the sampled quartets will only 
 # involve different species (and no more than 1 individual per species). Bootstrap value
 # set to TRUE (default)
-output <- SNPs2CF(seqMatrix=OUTPUT_phylip, ImapName=INPUT_map, between.sp.only=TRUE, 
+# output <- SNPs2CF(seqMatrix=OUTPUT_phylip, ImapName=INPUT_map, between.sp.only=TRUE,
+#                   outputName=OUTPUT_CFtable, save.progress=FALSE)
+output <- SNPs2CF(seqMatrix=OUTPUT_phylip, ImapName=INPUT_map, between.sp.only=TRUE,
                   outputName=OUTPUT_CFtable, save.progress=FALSE, cores=num_cores)
 print(paste0('\n', '%%% Completed running the SNPs2CF command!!! %%%'))
 
