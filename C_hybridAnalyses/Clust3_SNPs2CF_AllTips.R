@@ -27,10 +27,10 @@ setwd(QUTA_SNaQ_wd)
 num_cores <- detectCores() - 4 
 
 # Specify filepaths to input phylip and map files, and to output CSV
-INPUT_VCF <- 'Input/QUTA_Clust3_SNaQ1.vcf'
-OUTPUT_phylip <- 'Input/QUTA_Clust3_SNaQ1.phylip'
-INPUT_map <- 'Input/QUTA_Clust3_SNaQ1_Imap.txt'
-OUTPUT_CFtable <- 'Output/Clust3_SNaQ1_CFtable_8sp.csv'
+INPUT_VCF <- 'Input/QUTA_Clust3_SNPs2CF_AllTips.vcf'
+OUTPUT_phylip <- 'Input/QUTA_Clust3_SNPs2CF_AllTips.phylip'
+INPUT_map <- 'Input/QUTA_Clust3_SNPs2CF_AllTips_Imap.txt'
+OUTPUT_CFtable <- 'Output/Clust3_SNPs2CF_AllTips_CFtable.csv'
 
 # %%% CONVERT VCF TO PHYLIP ----
 # This command only needs to be run once; once run, a phylip file will be written to disk. This
