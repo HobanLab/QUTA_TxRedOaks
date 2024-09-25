@@ -83,9 +83,9 @@ QUTA_SNaQ1_wd <- '/RAID1/QUTA_TX_RedOaks/Genotyping/SNP_Calling/Output/Clust3_se
 setwd(QUTA_SNaQ1_wd)
 # Read in genind file
 QUTA_SNaQ1_gen <- read.genepop("populations.snps.gen")
-# Convert genind file to data.frame
+# Convert genind file to dataframe
 QUTA_SNaQ1_df <- genind2df(QUTA_SNaQ1_gen)
-# Convert data.frame to genlight object
+# Convert dataframe to genlight object
 QUTA_SNaQ1_genLight <- as.genlight(QUTA_SNaQ1_df)
 # Build a genetic distance matrix from the genlight object
 QUTA_SNaQ1_distMat <- dist(QUTA_SNaQ1_genLight)
@@ -99,3 +99,29 @@ QUTA_SNaQ1_njTree$tip.label <- sub('OAK-UMN-000','',QUTA_SNaQ1_njTree$tip.label)
 # Plot
 par(mar=c(1,1,2,1)+0.1)
 plot(QUTA_SNaQ1_njTree, 'phylo', main='SNaQ1 NJ Tree: Abbreviated Sample Names')
+
+# SNaQ: ALL TIPS SAMPLE SET %%%% ----
+QUTA_SNaQ_AllTips_wd <- '/RAID1/QUTA_TX_RedOaks/Genotyping/SNP_Calling/Output/Clust3_seOnly/SNaQ_AllTips/'
+setwd(QUTA_SNaQ_AllTips_wd)
+# Read in genind file
+QUTA_SNaQ_AllTips_gen <- read.genepop("populations.snps.gen")
+# Convert genind file to dataframe
+QUTA_SNaQ_AllTips_df <- genind2df(QUTA_SNaQ_AllTips_gen)
+# Convert dataframe to genlight object
+QUTA_SNaQ_AllTips_genLight <- as.genlight(QUTA_SNaQ_AllTips_df)
+# Build a genetic distance matrix from the genlight object
+QUTA_SNaQ_AllTips_distMat <- dist(QUTA_SNaQ_AllTips_genLight)
+# Build a NJ tree from the genetic distance matrix
+QUTA_SNaQ_AllTips_njTree <- nj(QUTA_SNaQ_AllTips_distMat)
+# Rename the phylognetic tree, to make more discernible for plot
+QUTA_SNaQ_AllTips_njTree$tip.label <- c('EMOR_0361','HYPO_0410','HYPO_1178','MIQU_6235','EMOR_6549',
+                                        'GRAV_6557','TARD_6698','TARD_6699','GRAV_7267','TARD_7269',
+                                        'TARD_7270','TARD_7271','TARD_7272','TARD_7278','MIQU_7329')
+# Plot
+par(mar=c(1,1,2,1)+0.1)
+plot(QUTA_SNaQ_AllTips_njTree, 'phylo', main='SNaQ_AllTips NJ Tree: Abbreviated Sample Names')
+# SNaQ requires an initial topology, to build a phylogenetic network. We write this NJ tree as a Newick
+# file, to provide that topology
+write.tree(QUTA_SNaQ_AllTips_njTree, 
+           file='/RAID1/QUTA_TX_RedOaks/HybridAnalyses/SNaQ/AllTips1/Input/Clust3_SNPs2CF_AllTips.tre')
+
