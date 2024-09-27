@@ -1,0 +1,15 @@
+# %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+# %%% IGNORED FILES/FOLDERS FOR QUTA TEXAS RED OAK PROJECT %%%
+# %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+# The files and folders specified in this file are not tracked in the GitHub repository for the QUTA_TRO project. 
+
+# Any Rhistory/Rdata/Rproj files
+*.Rhistory
+*.RData
+*.Rdata
+*.Rproj*
+
+# Any output files, PDFs
+*.out
+*.pdf
