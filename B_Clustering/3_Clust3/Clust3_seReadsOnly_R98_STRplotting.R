@@ -417,3 +417,74 @@ axis(4, at=ScyHypoCanTar_tickMarks_H, labels = FALSE, lwd.ticks = 2.5, tck=-0.03
 axis(4, at=ScyHypoCanTar_tickMarks_H, labels = FALSE, lwd.ticks = 2.5, tck=1.005, xpd=TRUE)
 # Add sample names along the graph (on the right)
 text(x=1.005, y=Ypos, srt=0, adj=0, xpd=TRUE, labels=QUTA_ScyHypoCanTar_sampleNamesAndDets, cex=0.78)
+
+# %%%% GRAV-HYPO-TAR DATASET %%%% ----
+# %%%% VARIABLES ----
+# Colors for different clusters
+QUTA_colors <- brewer.pal(12, "Paired")
+# Read in text file of sample names
+QUTA_GravHypoTar_sampleNames <- 
+  as.list(read.table("/RAID1/QUTA_TX_RedOaks/Clustering/STRUCTURE/Clust3_GravHypoTar/QUTA_Clust3_GravHypoTar_sampleNames.txt", 
+                     stringsAsFactors = FALSE))
+# Reformat sample names as a vector
+QUTA_GravHypoTar_sampleNames <- unname(unlist(QUTA_GravHypoTar_sampleNames))
+# Remove prefixes ('SYST-MOR-000','OAK-M**-000' ), to make names discernible
+QUTA_GravHypoTar_sampleNames <- sub('SYST-MOR-000','', QUTA_GravHypoTar_sampleNames)
+QUTA_GravHypoTar_sampleNames <- sub('OAK-MOR-00','', QUTA_GravHypoTar_sampleNames)
+QUTA_GravHypoTar_sampleNames <- sub('OAK-MOR-000','', QUTA_GravHypoTar_sampleNames)
+QUTA_GravHypoTar_sampleNames <- sub('OAK-UMN-000','', QUTA_GravHypoTar_sampleNames)
+# Group labels for GravHypoTar
+GravHypoTar_labels <- c('gravesii','hypoleucoides','grav x hypo','tardifolia')
+# Label and tick mark positions (Multiple K values)
+GravHypoTar_labelPositions_multipleK <- c(7,23,34.6,42.4)
+GravHypoTar_tickMarks_multipleK <- c(0,15.8,31.5,37.8)
+
+# %%%% PLOTTING %%%% ----
+# %%%% R98_WL10K ----
+# Variable file path: directory containing all CLUMPP outputs to read in
+QUTA_GravHypoTar_clumppDir <- 
+  "/RAID1/QUTA_TX_RedOaks/Clustering/STRUCTURE/Clust3_GravHypoTar/Output/CLUMPAK/Output/mainPipeline/"
+# ALL K VALUES (2--7) ----
+Xpos <- 
+  Plot.AllK(QUTA_GravHypoTar_clumppDir, Ks=2:7, QUTA_colors, sampleNames = QUTA_GravHypoTar_sampleNames, 
+            majorClust = TRUE, tickMarks = GravHypoTar_tickMarks_multipleK, popNamesPresent = FALSE)
+# Add group labels
+text(x=GravHypoTar_labelPositions_multipleK, y=-0.12, srt=35, adj=1, xpd=TRUE, labels=GravHypoTar_labels, cex=1.2)
+# K VALUES 2--4 ----
+Xpos <- 
+  Plot.AllK(QUTA_GravHypoTar_clumppDir, Ks=2:4, QUTA_colors, sampleNames = QUTA_GravHypoTar_sampleNames, 
+            majorClust = TRUE, tickMarks = GravHypoTar_tickMarks_multipleK, popNamesPresent = FALSE)
+# Add group labels
+text(x=GravHypoTar_labelPositions_multipleK, y=-0.12, srt=35, adj=1, xpd=TRUE, labels=GravHypoTar_labels, cex=1.2)
+# K VALUES 5--7 ----
+Xpos <- 
+  Plot.AllK(QUTA_GravHypoTar_clumppDir, Ks=5:7, QUTA_colors, sampleNames = QUTA_GravHypoTar_sampleNames, 
+            majorClust = TRUE, tickMarks = GravHypoTar_tickMarks_multipleK, popNamesPresent = FALSE)
+# Add group labels
+text(x=GravHypoTar_labelPositions_multipleK, y=-0.12, srt=35, adj=1, xpd=TRUE, labels=GravHypoTar_labels, cex=1.2)
+
+# HORIZONTAL STRUCTURE PLOT ----
+# Tick mark positions for K=6, horizontal
+GravHypoTar_tickMarks_H <- c(0,35.9,72.5,86.5)
+# Read in text file of sample names and dets
+QUTA_GravHypoTar_sampleNamesAndDets <- 
+  as.list(read.csv2("/RAID1/QUTA_TX_RedOaks/Clustering/STRUCTURE/Clust3_GravHypoTar/GravHypoTar_SampleList.csv", 
+                    stringsAsFactors = FALSE, header = TRUE))
+# Reformat sample names as a vector
+QUTA_GravHypoTar_sampleNamesAndDets <- unlist(unname(QUTA_GravHypoTar_sampleNamesAndDets))
+# Specify graphing parameters to plot single K value horizontally
+dev.off()
+par(mar = c(2.1,0.6,11.2,11) + 0.1, oma = c(0,0.2,1.2,0), mgp = c(1,1,0))
+# K=2 ----
+# Plot K = 6 on its own, horizontally
+Ypos <- Plot.K_H(QUTA_GravHypoTar_clumppDir, K=2, QUTA_colors, majorClust=TRUE, 
+                 popNamesPresent=FALSE, sampleNames = QUTA_GravHypoTar_sampleNames, 
+                 showSampleNames = TRUE, hFlag=TRUE, barWidth = 2)
+# Add title
+title('QUTA_TxRedOaks: GravHypoTar Dataset: K=2', line = 10.4)
+mtext('Single Reads Only; R98, 10,000 loci (Whitelist)', line=9.2)
+# Plot tick marks (horizontally)
+axis(4, at=GravHypoTar_tickMarks_H, labels = FALSE, lwd.ticks = 2.5, tck=-0.03, xpd=TRUE)
+axis(4, at=GravHypoTar_tickMarks_H, labels = FALSE, lwd.ticks = 2.5, tck=1.005, xpd=TRUE)
+# Add sample names along the graph (on the right)
+text(x=1.005, y=Ypos, srt=0, adj=0, xpd=TRUE, labels=QUTA_GravHypoTar_sampleNamesAndDets, cex=0.78)
