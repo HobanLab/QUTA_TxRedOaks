@@ -7,7 +7,7 @@
 # This is a Julia script used for building a phylogenetic network using SNaQ. This network is used to test
 # the likelihood of different phylogenetic placements of Q. tardifolia. The inputs for this script are a 
 # table of concordance factors (CF table), which was built using the SNPs2CF tool, and a starting topology,
-# which was a simple Newick tree outlining the relations between the 8 samples being analyzed.
+# which was a simple Newick tree outlining the relations between the samples being analyzed.
 
 # Read in necessary packages
 using PhyloNetworks
@@ -25,8 +25,8 @@ AllTips_Net1_Tree_filepath = "/RAID1/QUTA_TX_RedOaks/HybridAnalyses/SNaQ/AllTips
 AllTips_Net1_Tree = readTopology(AllTips_Net1_Tree_filepath)
 # Specify output directory
 AllTips_Out = "/RAID1/QUTA_TX_RedOaks/HybridAnalyses/SNaQ/AllTips/Output/AllTips_Net1"
-# Call SNaQ to build the initial phylogenetic network. The hmax argument is set to 0 because we're initially 
-# exploring no hybridization events. The default for SNaQ is to use 10 runs.
+# Call SNaQ to build the initial phylogenetic network. The hmax argument is set to 1 
+# The default for SNaQ is to use 10 runs.
 AllTips_Net1 = snaq!(AllTips_Net1_Tree,  AllTips_Net1_CF, hmax=1, filename=AllTips_Out, seed=123)
 
 # Plot the resulting phylogenetic network and save to a PDF file
