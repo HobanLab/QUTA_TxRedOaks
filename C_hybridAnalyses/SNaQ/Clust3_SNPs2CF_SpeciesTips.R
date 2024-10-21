@@ -31,13 +31,13 @@ num_cores <- detectCores() - 4
 INPUT_VCF <- 'Input/QUTA_Clust3_SNPs2CF_SpeciesTips.vcf'
 OUTPUT_phylip <- 'Input/QUTA_Clust3_SNPs2CF_SpeciesTips.phylip'
 INPUT_map <- 'Input/QUTA_Clust3_SNPs2CF_SpeciesTips_Imap.txt'
-OUTPUT_CFtable <- 'Output/Clust3_SNPs2CF_SpeciesTips_CFtable.csv'
+OUTPUT_CFtable <- 'Output/Clust3_SNPs2CF_SpeciesTips_CFtable2.csv'
 
 # %%% CONVERT VCF TO PHYLIP ----
 # This command only needs to be run once; once run, a phylip file will be written to disk. This
 # phylip file will be the input for the SNPs2CF command (see below). 
-vcf2phylip(vcf.name=INPUT_VCF, total.SNPs=86142, random.phase=T, 
-           output.name=OUTPUT_phylip,  cores=num_cores)
+# vcf2phylip(vcf.name=INPUT_VCF, total.SNPs=86142, random.phase=T, 
+#            output.name=OUTPUT_phylip,  cores=num_cores)
 # NOTE: converting the VCF to a phylip file leads to 2 lines per individual in the PHYLIP 
 # file to be written (one for each haplotype, labeled _0 and _1). The map file therefore also
 # needs to have these two lines per individual specified.
