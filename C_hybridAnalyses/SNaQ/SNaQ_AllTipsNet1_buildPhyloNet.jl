@@ -34,3 +34,5 @@ using RCall
 R"pdf"("AllTips_Net1.pdf", width=15, height=9);
 plot(AllTips_Net1, :R);
 R"dev.off()";
+
+?snaq!
