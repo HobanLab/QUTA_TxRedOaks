@@ -30,7 +30,7 @@ num_cores <- detectCores() - 4
 # Specify filepaths to input phylip and map files, and to output CSV
 INPUT_VCF <- 'Input/QUTA_Clust3_SNPs2CF_SpeciesTips.vcf'
 OUTPUT_phylip <- 'Input/QUTA_Clust3_SNPs2CF_SpeciesTips.phylip'
-INPUT_map <- 'Input/QUTA_Clust3_SNPs2CF_SpeciesTips_Imap.txt'
+INPUT_map <- 'Input/QUTA_Clust3_SNPs2CF_SpeciesTips_Imap_IDs.txt'
 OUTPUT_CFtable <- 'Output/Clust3_SNPs2CF_SpeciesTips_CFtable2.csv'
 
 # %%% CONVERT VCF TO PHYLIP ----

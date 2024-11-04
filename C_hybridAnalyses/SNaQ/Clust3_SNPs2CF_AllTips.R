@@ -50,8 +50,6 @@ print(paste0('%%% SNPs2CF START: ', startTime))
 # Because the between.sp.only command is set to TRUE, all of the sampled quartets will only 
 # involve different species (and no more than 1 individual per species). Bootstrap value
 # set to TRUE (default)
-# output <- SNPs2CF(seqMatrix=OUTPUT_phylip, ImapName=INPUT_map, between.sp.only=TRUE,
-#                   outputName=OUTPUT_CFtable, save.progress=FALSE)
 output <- SNPs2CF(seqMatrix=OUTPUT_phylip, ImapName=INPUT_map, between.sp.only=TRUE,
                   outputName=OUTPUT_CFtable, save.progress=FALSE, cores=num_cores)
 print(paste0('\n', '%%% Completed running the SNPs2CF command!!! %%%'))
