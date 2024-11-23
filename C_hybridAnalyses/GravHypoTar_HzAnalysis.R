@@ -13,12 +13,12 @@
 library(dartR)
 library(report)
 
-# COMPLETE DATASET ----
 # Specify the filepath to the Stacks populations directory
 GravHypoTar_Dir <- 
   '/RAID1/QUTA_TX_RedOaks/Genotyping/SNP_Calling/Output/Clust3_seOnly/GravHypoTar_R98'
 setwd(GravHypoTar_Dir)
 
+# COMPLETE DATASET, T-TEST ----
 # Specify the filepath to the relevant VCF file, and read it in
 GravHypoTar_Complete <- gl.read.vcf('populations.snps.vcf')
 # Specify the populations of the samples. This is necessary because
@@ -55,3 +55,26 @@ tTest_TARDvHYPO <- t.test(x=TARD_Hz, y=HYPO_Hz, alternative = 'greater')
 # Because p-value is low, we reject the null hypothesis that the difference in means in the
 # two groups is 0 (alternative hypothesis is mean is greater in TARD)
 report(tTest_TARDvHYPO)
+
+# TRIANGLE PLOTS ----
+# Building triangle plots, which are plots of interclass heterozygosity versus hybrid indices,
+# and are meant to help distinguish admixture patterns due to hybridization from isolation by distance.
+library(triangulaR)
+library(vcfR)
+
+# Read in the VCF file generated for 
+GHT_vcf <- read.vcfR('populations.snps.vcf')
+# Read in a popmap, which is a data.frame with two columns: 'id' and 'pop'
+GHT_popmap <- read.table('GravHypoTar_popList.csv', header = TRUE, sep=',')
+
+# Create a new vcfR object composed only of sites above the given allele frequency difference threshold
+GHT_vcf_diff <- 
+  alleleFreqDiff(vcfR=GHT_vcf, pm=GHT_popmap, p1="GRAV", p2="HYPO", difference=0.9)
+# Calculate hybrid index and heterozygosity for each sample. Values are returned in a data.frame
+GHT_hybridIndex <- hybridIndex(vcfR=GHT_vcf_diff, pm=GHT_popmap, p1="GRAV", p2="HYPO")
+
+# PLOTTING
+# Specify a vector of colors
+GHT_cols <- c("#af8dc3", "#7fbf7b", "#bababa", "#878787", "#762a83", "#1b7837")
+# Generate a triangle plot
+triangle.plot(GHT_hybridIndex, colors=GHT_cols)
