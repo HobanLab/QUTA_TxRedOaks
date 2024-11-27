@@ -10,7 +10,7 @@
 # At the end, t-tests are run to determine whether Hz values are statistically higher in the
 # TARD individuals.
 
-library(dartR)
+library(dartR, quietly = TRUE)
 library(report)
 
 # Specify the filepath to the Stacks populations directory
@@ -66,10 +66,12 @@ library(vcfR)
 GHT_vcf <- read.vcfR('populations.snps.vcf')
 # Read in a popmap, which is a data.frame with two columns: 'id' and 'pop'
 GHT_popmap <- read.table('GravHypoTar_popList.csv', header = TRUE, sep=',')
-
+# Specify a value for the allele frequency difference threshold (only alleles with frequency differences
+# of this amount or greater in parental groups are considered for calculating interclass heterozygosity)
+alleleFreqThresh <- 0.75
 # Create a new vcfR object composed only of sites above the given allele frequency difference threshold
 GHT_vcf_diff <- 
-  alleleFreqDiff(vcfR=GHT_vcf, pm=GHT_popmap, p1="GRAV", p2="HYPO", difference=0.9)
+  alleleFreqDiff(vcfR=GHT_vcf, pm=GHT_popmap, p1="GRAV", p2="HYPO", difference=alleleFreqThresh)
 # Calculate hybrid index and heterozygosity for each sample. Values are returned in a data.frame
 GHT_hybridIndex <- hybridIndex(vcfR=GHT_vcf_diff, pm=GHT_popmap, p1="GRAV", p2="HYPO")
 
@@ -77,4 +79,27 @@ GHT_hybridIndex <- hybridIndex(vcfR=GHT_vcf_diff, pm=GHT_popmap, p1="GRAV", p2="
 # Specify a vector of colors
 GHT_cols <- c("#af8dc3", "#7fbf7b", "#bababa", "#878787", "#762a83", "#1b7837")
 # Generate a triangle plot
-triangle.plot(GHT_hybridIndex, colors=GHT_cols)
+tri_plot <- triangulaR::triangle.plot(GHT_hybridIndex, colors=GHT_cols, cex=3)
+# Print the allele frequency threshold value and the number of differentiated sites
+tri_plot + annotate('text', x=0.8, y=0.9, label=paste0('Allele frequency threshold: ', alleleFreqThresh))+ 
+  annotate('text', x=0.8, y=0.8, label=paste0('Number of sites: ', nrow(GHT_vcf_diff@fix)))
+
+# Repeat the process, but using a higher allele frequency threshold
+alleleFreqThresh <- 0.9
+GHT_vcf_diff <- 
+  alleleFreqDiff(vcfR=GHT_vcf, pm=GHT_popmap, p1="GRAV", p2="HYPO", difference=alleleFreqThresh)
+GHT_hybridIndex <- hybridIndex(vcfR=GHT_vcf_diff, pm=GHT_popmap, p1="GRAV", p2="HYPO")
+# Generate a triangle plot
+tri_plot <- triangulaR::triangle.plot(GHT_hybridIndex, colors=GHT_cols, cex=3)
+tri_plot + annotate('text', x=0.8, y=0.9, label=paste0('Allele frequency threshold: ', alleleFreqThresh))+ 
+  annotate('text', x=0.8, y=0.8, label=paste0('Number of sites: ', nrow(GHT_vcf_diff@fix)))
+
+# Repeat the process, but using a higher allele frequency threshold
+alleleFreqThresh <- 1
+GHT_vcf_diff <- 
+  alleleFreqDiff(vcfR=GHT_vcf, pm=GHT_popmap, p1="GRAV", p2="HYPO", difference=alleleFreqThresh)
+GHT_hybridIndex <- hybridIndex(vcfR=GHT_vcf_diff, pm=GHT_popmap, p1="GRAV", p2="HYPO")
+# Generate a triangle plot
+tri_plot <- triangulaR::triangle.plot(GHT_hybridIndex, colors=GHT_cols, cex=3)
+tri_plot + annotate('text', x=0.8, y=0.9, label=paste0('Allele frequency threshold: ', alleleFreqThresh))+ 
+  annotate('text', x=0.8, y=0.8, label=paste0('Number of sites: ', nrow(GHT_vcf_diff@fix)))
