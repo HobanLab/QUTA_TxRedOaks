@@ -1,7 +1,14 @@
+# %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+# %%% QUERCUS TARDIFOLIA F3 STATISTICS %%%
+# %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+# This script is used to calculate F3 statistics for the set of individuals utilized in Clustering run #3
+# of the QUTA Texas red oak population analyses. It reads in the PLINK file from that run, and then
+# generates a table of F3 statistics using the admixtools library
+
 library(admixtools)
 
 # %%% CALCULATING F3 STATS FOR TARDIFOLIA %%% ----
-
 # All populations 'wild'
 plinkDir <- '/RAID1/QUTA_TX_RedOaks/Genotyping/SNP_Calling/Output/Clust3_seOnly/pop_R98/plinkFiles/'
 setwd(plinkDir)
