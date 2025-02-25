@@ -16,11 +16,11 @@ QUTA_coordinateData <- read_csv(QUTA_coordinateDir)
 # Filter out rows with NA Latitude or Longitude
 QUTA_coordinateData <- QUTA_coordinateData %>% filter(!is.na(LatitudeUnprotected) & !is.na(LongitudeUnprotected))
 
-# Define a color palette based only on the remaining species
+# # Define a color palette based only on the remaining species
 species_present <- unique(QUTA_coordinateData$TaxaUpdated)
 # Specify a vector of color names. The grays are meant to represent taxa which are less frequent/central to analyses
-QUTA_colors <- c('gray', 'gray', 'darkgreen', 'chartreuse4', 'chartreuse', 'cadetblue1', 'darkorchid', 'gray',
-                 'antiquewhite3', 'darkorange4', 'darkolivegreen', 'darkgoldenrod2', 'darkorange')
+QUTA_colors <- c('coral1', 'antiquewhite', 'blue4', 'chartreuse4', 'chartreuse', 'cadetblue1', 'darkorchid', 'bisque',
+                 'darksalmon', 'darkorange4', 'darkolivegreen', 'darkgoldenrod2', 'gray')
 # Create a named color vector (species -> color mapping)
 species_colors <- setNames(QUTA_colors, species_present)
 # Define a color function for Leaflet
