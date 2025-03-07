@@ -8,7 +8,7 @@
 # been significantly cleaned up from original designations...)
 
 # Load necessary libraries
-pacman::p_load(dplyr, rnaturalearth, rnaturalearthdata, readr, leaflet, htmlwidgets)
+pacman::p_load(dplyr, rnaturalearth, rnaturalearthdata, readr, leaflet, htmlwidgets, viridis)
 
 # Specify filepath to sample coordinates, and read in
 QUTA_coordinateDir <- '/home/akoontz/Documents/QUTA_TxRedOaks/Code/D_Mapping/QUTA_TxRedOak_MappingList.csv'
@@ -19,8 +19,8 @@ QUTA_coordinateData <- QUTA_coordinateData %>% filter(!is.na(LatitudeUnprotected
 # # Define a color palette based only on the remaining species
 species_present <- unique(QUTA_coordinateData$TaxaUpdated)
 # Specify a vector of color names. The grays are meant to represent taxa which are less frequent/central to analyses
-QUTA_colors <- c('coral1', 'antiquewhite', 'blue4', 'chartreuse4', 'chartreuse', 'cadetblue1', 'darkorchid', 'bisque',
-                 'darksalmon', 'darkorange4', 'darkolivegreen', 'darkgoldenrod2', 'gray')
+QUTA_colors <- c('coral1', 'antiquewhite', 'blue4', 'chartreuse4', 'chartreuse', 'cadetblue1', 'darkorchid', 'bisque', 'red',
+                 'darksalmon', 'darkorange4', 'darkolivegreen', 'darkgoldenrod2', 'pink', 'black', 'gray')
 # Create a named color vector (species -> color mapping)
 species_colors <- setNames(QUTA_colors, species_present)
 # Define a color function for Leaflet
@@ -49,7 +49,7 @@ QUTA_map <- leaflet(QUTA_coordinateData) %>%
   addLayersControl(
     overlayGroups = species_present,  # Only include present species
     options = layersControlOptions(collapsed = FALSE),
-    position = "topright"  # Place layers control at top right
+    position = "topleft"  # Place layers control at top left
   )
 
 # Use JavaScript to adjust the position of the legend
