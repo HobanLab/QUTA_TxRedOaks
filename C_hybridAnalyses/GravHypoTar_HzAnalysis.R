@@ -84,17 +84,17 @@ tri_plot <- triangulaR::triangle.plot(GHT_hybridIndex, colors=GHT_cols, cex=3)
 tri_plot + annotate('text', x=0.8, y=0.9, label=paste0('Allele frequency threshold: ', alleleFreqThresh))+ 
   annotate('text', x=0.8, y=0.8, label=paste0('Number of sites: ', nrow(GHT_vcf_diff@fix)))
 
-# Repeat the process, but using a higher allele frequency threshold
+# Repeat the process, but using a higher allele frequency threshold (0.9)
 alleleFreqThresh <- 0.9
 GHT_vcf_diff <- 
   alleleFreqDiff(vcfR=GHT_vcf, pm=GHT_popmap, p1="GRAV", p2="HYPO", difference=alleleFreqThresh)
 GHT_hybridIndex <- hybridIndex(vcfR=GHT_vcf_diff, pm=GHT_popmap, p1="GRAV", p2="HYPO")
 # Generate a triangle plot
 tri_plot <- triangulaR::triangle.plot(GHT_hybridIndex, colors=GHT_cols, cex=3)
-tri_plot + annotate('text', x=0.8, y=0.9, label=paste0('Allele frequency threshold: ', alleleFreqThresh))+ 
+tri_plot + annotate('text', x=0.8, y=0.9, label=paste0('Allele frequency threshold: ', alleleFreqThresh)) + 
   annotate('text', x=0.8, y=0.8, label=paste0('Number of sites: ', nrow(GHT_vcf_diff@fix)))
 
-# Repeat the process, but using a higher allele frequency threshold
+# Repeat the process, but using a higher allele frequency threshold (1.0)
 alleleFreqThresh <- 1
 GHT_vcf_diff <- 
   alleleFreqDiff(vcfR=GHT_vcf, pm=GHT_popmap, p1="GRAV", p2="HYPO", difference=alleleFreqThresh)
@@ -103,3 +103,40 @@ GHT_hybridIndex <- hybridIndex(vcfR=GHT_vcf_diff, pm=GHT_popmap, p1="GRAV", p2="
 tri_plot <- triangulaR::triangle.plot(GHT_hybridIndex, colors=GHT_cols, cex=3)
 tri_plot + annotate('text', x=0.8, y=0.9, label=paste0('Allele frequency threshold: ', alleleFreqThresh))+ 
   annotate('text', x=0.8, y=0.8, label=paste0('Number of sites: ', nrow(GHT_vcf_diff@fix)))
+
+# TRIANGLE PLOTS, FOR CONFERENCE PRESENTATION ----
+# Building triangle plots, which are plots of interclass heterozygosity versus hybrid indices,
+# and are meant to help distinguish admixture patterns due to hybridization from isolation by distance.
+library(triangulaR)
+library(vcfR)
+
+# Read in the VCF file generated for 
+GHT_vcf <- read.vcfR('populations.snps.vcf')
+# Read in a popmap, which is a data.frame with two columns: 'id' and 'pop'
+GHT_popmap <- read.table('GravHypoTar_popList.csv', header = TRUE, sep=',')
+# Update names in popmap
+# colnames(GHT_popmap) <- c('id', 'Taxa')
+# GHT_popmap$id <- gsub('GRAV','gravesii',GHT_popmap$id)
+# GHT_popmap$id <- gsub('HYPO','hypoleucoides',GHT_popmap$id)
+# GHT_popmap$id <- gsub('TARD','tardifolia',GHT_popmap$id)
+# Specify a value for the allele frequency difference threshold (only alleles with frequency differences
+# of this amount or greater in parental groups are considered for calculating interclass heterozygosity)
+alleleFreqThresh <- 0.9
+# Create a new vcfR object composed only of sites above the given allele frequency difference threshold
+GHT_vcf_diff <- 
+  alleleFreqDiff(vcfR=GHT_vcf, pm=GHT_popmap, p1="GRAV", p2="HYPO", difference=alleleFreqThresh)
+# GHT_vcf_diff <- 
+#   alleleFreqDiff(vcfR=GHT_vcf, pm=GHT_popmap, p1="gravesii", p2="hypoleucoides", difference=alleleFreqThresh)
+# Calculate hybrid index and heterozygosity for each sample. Values are returned in a data.frame
+GHT_hybridIndex <- hybridIndex(vcfR=GHT_vcf_diff, pm=GHT_popmap, p1="GRAV", p2="HYPO")
+# GHT_hybridIndex <- hybridIndex(vcfR=GHT_vcf_diff, pm=GHT_popmap, p1="gravesii", p2="hypoleucoides")
+
+# PLOTTING
+# Specify a vector of colors
+GHT_cols <- c("#af8dc3", "#7fbf7b", "#bababa", "#878787", "#762a83", "#1b7837")
+# Generate a triangle plot
+tri_plot <- triangulaR::triangle.plot(GHT_hybridIndex, colors=GHT_cols, cex=3)
+# Print the allele frequency threshold value and the number of differentiated sites
+tri_plot + annotate('text', x=0.8, y=0.9, label=paste0('Allele frequency threshold: ', alleleFreqThresh)) + 
+  annotate('text', x=0.8, y=0.8, label=paste0('Number of sites: ', nrow(GHT_vcf_diff@fix))) +
+  guides(color=guide_legend(title="Taxa")) + theme(legend.position = c(0.5,0.3))
