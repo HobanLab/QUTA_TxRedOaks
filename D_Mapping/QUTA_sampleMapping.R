@@ -16,6 +16,7 @@ QUTA_coordinateData <- read_csv(QUTA_coordinateDir)
 # Filter out rows with NA Latitude or Longitude
 QUTA_coordinateData <- QUTA_coordinateData %>% filter(!is.na(LatitudeUnprotected) & !is.na(LongitudeUnprotected))
 
+# %%% ALL SAMPLES (165) ----
 # # Define a color palette based only on the remaining species
 species_present <- unique(QUTA_coordinateData$TaxaUpdated)
 # Specify a vector of color names. The grays are meant to represent taxa which are less frequent/central to analyses
@@ -51,7 +52,6 @@ QUTA_map <- leaflet(QUTA_coordinateData) %>%
     options = layersControlOptions(collapsed = FALSE),
     position = "topleft"  # Place layers control at top left
   )
-
 # Use JavaScript to adjust the position of the legend
 QUTA_map <- onRender(QUTA_map, "
   function(el, x) {
@@ -62,6 +62,59 @@ QUTA_map <- onRender(QUTA_map, "
     }
   }
 ")
-
 # Display the map
 QUTA_map
+
+# %%% SUBSET SAMPLES ----
+# Specify which taxa to include
+subsetTaxa <- c("Q gravesii x hypoleucoides", "Quercus canbyi", "Quercus graciliformis", 
+                "Quercus gravesii", "Quercus hypoleucoides", "Quercus scythophylla", "Quercus tardifolia")
+# Create a new tibble, which is subset based on the vector of taxa names above
+QUTA_coordinateData_Subset <- QUTA_coordinateData %>%
+  filter(TaxaUpdated %in% subsetTaxa)
+# # Define a color palette based only on the remaining species
+species_present <- unique(QUTA_coordinateData_Subset$TaxaUpdated)
+# Specify a vector of color names. The grays are meant to represent taxa which are less frequent/central to analyses
+QUTA_colors <- c('orange', 'blue4', 'brown', 'purple', 'darkgreen', 'red')
+# Create a named color vector (species -> color mapping)
+species_colors <- setNames(QUTA_colors, species_present)
+# Define a color function for Leaflet
+species_pal <- colorFactor(palette = species_colors, domain = species_present)
+
+# Create the Leaflet map
+QUTA_subsetMap <- leaflet(QUTA_coordinateData_Subset) %>%
+  addProviderTiles(providers$Esri.WorldTopoMap) %>%  # Use a nice basemap
+  addCircleMarkers(
+    ~LongitudeUnprotected, ~LatitudeUnprotected,
+    color = ~species_pal(TaxaUpdated),
+    radius = 6,
+    stroke = TRUE,
+    fillOpacity = 0.8,
+    popup = ~paste("<b>Sample:</b>", SampleName, "<br><b>Species:</b>", TaxaUpdated),
+    group = ~TaxaUpdated  # Grouping for layer control
+  ) %>%
+  addLegend(
+    position = "topright",  # Initially place legend at top right
+    pal = species_pal,
+    values = species_present,  # Only include present species
+    title = "Taxa",
+    opacity = 1,
+    layerId = "legend"
+  ) %>%
+  addLayersControl(
+    overlayGroups = species_present,  # Only include present species
+    options = layersControlOptions(collapsed = FALSE),
+    position = "topleft"  # Place layers control at top left
+  )
+# Use JavaScript to adjust the position of the legend
+QUTA_subsetMap <- onRender(QUTA_subsetMap, "
+  function(el, x) {
+    var legend = document.querySelector('.leaflet-top.leaflet-right .leaflet-control');
+    var layersControl = document.querySelector('.leaflet-control-layers');
+    if (legend && layersControl) {
+      legend.style.marginTop = layersControl.clientHeight + 'px';
+    }
+  }
+")
+# Display the map
+QUTA_subsetMap
