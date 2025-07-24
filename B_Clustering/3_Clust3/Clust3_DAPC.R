@@ -37,7 +37,7 @@ QUTA_Clust3_gen <-
 
 # Read in the previously saved DAPC object
 QUTA_Clust3_gen.dapc <- 
-  readRDS("/home/akoontz/Documents/QUTA_TxRedOaks/Code/Clust3_DAPC_K3.Rdata")
+  readRDS("/home/akoontz/Documents/QUTA_TxRedOaks/Code/B_Clustering/DAPC_outputs/Clust3_DAPC_K3.Rdata")
 # List grouping of each individual (helpful for determining correct coloration)
 cbind(QUTA_Clust3_gen.dapc$grp, rownames(QUTA_Clust3_gen@tab))
 # Show DAPC as a scatterplot
@@ -65,7 +65,7 @@ mtext("Quercus tardifolia/Texas Red Oaks: K=3", adj=0.09, line=1.3)
 
 # Read in the previously saved DAPC object
 QUTA_Clust3_gen.dapc <- 
-  readRDS("/home/akoontz/Documents/QUTA_TxRedOaks/Code/Clust3_DAPC_K4.Rdata")
+  readRDS("/home/akoontz/Documents/QUTA_TxRedOaks/Code/B_Clustering/DAPC_outputs/Clust3_DAPC_K4.Rdata")
 # List grouping of each individual (helpful for determining correct coloration)
 cbind(QUTA_Clust3_gen.dapc$grp, rownames(QUTA_Clust3_gen@tab))
 # Show DAPC as a scatterplot
@@ -73,7 +73,7 @@ scatter(QUTA_Clust3_gen.dapc, scree.da=F, bg="white", pch=20, cell=0, cstar=0, s
         posi.leg=locator(n=1), cleg=1.0, cex=2, inset.solid=1,
         col = QUTA_colors[1:4],
         txt.leg = c('"gravesii"','"graciliformis/emoryi','"hypoleucoides"','"canbyi"'))
-mtext("Quercus tardifolia/Texas Red Oaks: K=4", adj=0.09, line=1.3)
+mtext("Quercus tardifolia/Texas Red Oaks: K=4", adj=0.09, line=-4.3)
 
 # %%%% SCY-HYPO-CAN-TAR %%%% ----
 # SE-READS ONLY, SCY-HYPO-CAN-TAR RUN 
