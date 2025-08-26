@@ -32,7 +32,7 @@ QUTA_Clust3_indsRemove <- c('SYST-MOR-0006540','SYST-MOR-0006541', 'SYST-MOR-000
 # Removing scytophylla and robusta samples, and one oddball canbyi
 QUTA_Clust3_indsRemove <- c(QUTA_Clust3_indsRemove, 'OAK-MOR-000896', 'OAK-MOR-000907', 'OAK-MOR-001178',
                             'OAK-MOR-001234', 'OAK-UMN-000180', 'OAK-UMN-000268', 'SYST-MOR-0006484',
-                            'SYST-MOR-0006548','SYST-MOR-0006599','SYST-MOR-0006694', 'SYST-MOR-0007305')
+                            'SYST-MOR-0006548','SYST-MOR-0006599', 'SYST-MOR-0007305')
 # Subset genlight object
 QUTA_Clust3_genlight <- 
   QUTA_Clust3_genlight[!indNames(QUTA_Clust3_genlight) %in% QUTA_Clust3_indsRemove, ]
