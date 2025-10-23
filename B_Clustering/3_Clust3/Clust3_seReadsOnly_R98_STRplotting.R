@@ -320,6 +320,14 @@ axis(4, at=clust3_tickMarks_K4_H, labels = FALSE, lwd.ticks = 3, tck=1.005, xpd=
 text(x=1.005, y=Ypos, srt=0, adj=0, xpd=TRUE, labels=QUTA_clust3_sampleNamesAndDets, cex=0.78)
 
 # %%%% K=4 VALUES, SUMMARY CLUSTERS, HORIZONTALLY ----
+# Read in text file of sample names and dets
+QUTA_clust3_sampleNamesAndDets <- 
+  as.list(read.csv2("/RAID1/QUTA_TX_RedOaks/Clustering/STRUCTURE/Clust3_seOnly/Clust3_sampleNamesAndDets.csv", 
+                    stringsAsFactors = FALSE, header = FALSE))
+# Reformat sample names as a vector
+QUTA_clust3_sampleNamesAndDets <- unname(unlist(QUTA_clust3_sampleNamesAndDets))
+# Replace commas with semicolons
+QUTA_clust3_sampleNamesAndDets <- sub(',',' ; ', QUTA_clust3_sampleNamesAndDets)
 # Tick mark positions for K=4, horizontal
 clust3_tickMarks_K4_H <- c(0,36,70.1,108,130,166)
 # Specify general names and locations, for groups in graph
