@@ -326,6 +326,34 @@ axis(4, at=clust3_tickMarks_K4_H, labels = FALSE, lwd.ticks = 3, tck=1.005, xpd=
 # Add sample names along the graph (on the right)
 text(x=1.005, y=Ypos, srt=0, adj=0, xpd=TRUE, labels=QUTA_clust3_sampleNamesAndDets, cex=0.78)
 
+# %%%% MANUSCRIPT DRAFT 1, FIGURE 2: K=4, HORIZONTAL, SAMPLE NAMES ----
+# Tick mark positions for K=4, horizontal
+clust3_tickMarks_K4_H <- c(0,36,70.1,108,130,166)
+# Read in text file of sample names and dets
+QUTA_clust3_sampleNamesAndDets <- 
+  as.list(read.csv2("/RAID1/QUTA_TX_RedOaks/Clustering/STRUCTURE/Clust3_seOnly/Clust3_sampleNamesAndDets.csv", 
+                    stringsAsFactors = FALSE, header = FALSE))
+# Reformat sample names as a vector
+QUTA_clust3_sampleNamesAndDets <- unname(unlist(QUTA_clust3_sampleNamesAndDets))
+# Replace commas with semicolons
+QUTA_clust3_sampleNamesAndDets <- sub(',',' ; ', QUTA_clust3_sampleNamesAndDets)
+# Specify graphing parameters to plot single K value horizontally
+dev.off()
+par(mar = c(2,0.2,16.75,12) + 0.1, oma = c(0,0.2,1.2,0.5), mgp = c(1,1,0))
+# Plot K = 4 on its own, horizontally
+Ypos <- Plot.K_H(QUTA_clust3_clumppDir, 4, QUTA_colors, majorClust=TRUE, 
+                 popNamesPresent=FALSE, sampleNames = QUTA_clust3_sampleNames, 
+                 showSampleNames = TRUE, hFlag=TRUE, barWidth = 2.25)
+# Add title
+title('Q. tardifolia and Texas Red Oaks: K=4', line = 16.1)
+mtext('R98, 9,954 loci', line=15.1)
+# Plot tick marks (horizontally)
+axis(4, at=clust3_tickMarks_K4_H, labels = FALSE, lwd.ticks = 3, tck=-0.01, xpd=TRUE)
+axis(4, at=clust3_tickMarks_K4_H, labels = FALSE, lwd.ticks = 3, tck=1.005, xpd=TRUE)
+# Add sample names along the graph (on the right)
+text(x=1.005, y=Ypos, srt=0, adj=0, xpd=TRUE, labels=QUTA_clust3_sampleNamesAndDets, cex=0.7)
+# Save image to PNG: height 1000, width 633
+
 # %%%% K=4 VALUES, SUMMARY CLUSTERS, HORIZONTALLY ----
 # Read in text file of sample names and dets
 QUTA_clust3_sampleNamesAndDets <- 
