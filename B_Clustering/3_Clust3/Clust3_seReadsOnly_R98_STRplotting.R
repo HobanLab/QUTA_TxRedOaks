@@ -197,6 +197,8 @@ QUTA_colors <- QUTA_colors[c(2,1,3:12)]
 # Variable file path: directory containing all CLUMPP outputs to read in
 QUTA_clust3_clumppDir <- 
   "/RAID1/QUTA_TX_RedOaks/Clustering/STRUCTURE/Clust3_seOnly/Output/CLUMPAK/Output/mainPipeline/"
+# Variable file path: directory to save images to
+QUTA_imageOutDir <- '/home/akoontz/Documents/QUTA_TxRedOaks/Documentation/Images/MS_2025-10-26/'
 # Read in text file of sample names
 QUTA_clust3_sampleNames <- 
   as.list(read.table("/RAID1/QUTA_TX_RedOaks/Clustering/STRUCTURE/Clust3_seOnly/Clust3_sampleNames.txt", 
@@ -209,8 +211,8 @@ QUTA_clust3_sampleNames <- sub('OAK-MOR-00','', QUTA_clust3_sampleNames)
 QUTA_clust3_sampleNames <- sub('OAK-MOR-000','', QUTA_clust3_sampleNames)
 QUTA_clust3_sampleNames <- sub('OAK-UMN-000','', QUTA_clust3_sampleNames)
 # Group labels for clust3
-clust3_labels <- c('"gravesii"','"grav. x emoryi"','"emoryi"','"canbyi"',
-                   '"hypo."','"grav. x hypo."')
+clust3_labels <- c('gravesii','grav. x emoryi','emoryi','canbyi',
+                   'hypo.','grav. x hypo.')
 
 # %%%% PLOTTING %%%% ----
 # %%%% ALL K VALUES ----
@@ -305,14 +307,19 @@ QUTA_clust3_sampleNamesAndDets <- unname(unlist(QUTA_clust3_sampleNamesAndDets))
 QUTA_clust3_sampleNamesAndDets <- sub(',',' ; ', QUTA_clust3_sampleNamesAndDets)
 # Specify graphing parameters to plot single K value horizontally
 dev.off()
-par(mar = c(2,0.2,24,12) + 0.1, oma = c(0,0.2,1.2,0), mgp = c(1,1,0))
+# par(mar = c(2,0.2,15,12) + 0.1, oma = c(0,0.2,1.2,0.5), mgp = c(1,1,0))
+par(mar = c(2,0.2,19.5,12) + 0.1, oma = c(0,0.2,1.2,0.5), mgp = c(1,1,0))
+# # Call pdf command, to save plots to disk
+# png(file = paste0(QUTA_imageOutDir, "Fig2_STR_K4.png"), width = 795, height = 1200)
 # Plot K = 4 on its own, horizontally
 Ypos <- Plot.K_H(QUTA_clust3_clumppDir, 4, QUTA_colors, majorClust=TRUE, 
                  popNamesPresent=FALSE, sampleNames = QUTA_clust3_sampleNames, 
                  showSampleNames = TRUE, hFlag=TRUE, barWidth = 2)
 # Add title
-title('QUTA_TxRedOaks: K=4', line = 23.3)
-mtext('Single Reads Only; R98, 9,954 loci; Third STRUCTURE Run', line=22)
+title('Q. tardifolia and Texas Red Oaks: K=4', line = 18.5)
+mtext('R98, 9,954 loci', line=17.2)
+# title('Q. tardifolia and Texas Red Oaks: K=4', line = 14.3)
+# mtext('R98, 9,954 loci', line=13.3)
 # Plot tick marks (horizontally)
 axis(4, at=clust3_tickMarks_K4_H, labels = FALSE, lwd.ticks = 3, tck=-0.01, xpd=TRUE)
 axis(4, at=clust3_tickMarks_K4_H, labels = FALSE, lwd.ticks = 3, tck=1.005, xpd=TRUE)
