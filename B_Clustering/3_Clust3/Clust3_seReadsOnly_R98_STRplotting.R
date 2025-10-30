@@ -157,7 +157,7 @@ plot.multipleK <- function(kList, kValues, kColors, tickMarks, parFlag=TRUE,
     axis(2, at = c(0, 0.25, 0.5, 0.75, 1), cex.axis = 1, las = 2, pos = -0.02)
     # For all but the last plot call, show tick marks (if specified)
     if(!is.null(tickMarks)){
-      axis(1, at=tickMarks, labels = FALSE, lwd.ticks = 2.8, tck=-0.15)
+      axis(1, at=tickMarks, labels = FALSE, lwd.ticks = 2.8, tck=-0.05)
       axis(1, at=tickMarks, labels = FALSE, lwd.ticks = 2.8, tck=1.05)
     }
   }
@@ -210,6 +210,7 @@ QUTA_clust3_sampleNames <- sub('SYST-MOR-000','', QUTA_clust3_sampleNames)
 QUTA_clust3_sampleNames <- sub('OAK-MOR-00','', QUTA_clust3_sampleNames)
 QUTA_clust3_sampleNames <- sub('OAK-MOR-000','', QUTA_clust3_sampleNames)
 QUTA_clust3_sampleNames <- sub('OAK-UMN-000','', QUTA_clust3_sampleNames)
+QUTA_clust3_sampleNames <- sub('SH-Q','', QUTA_clust3_sampleNames)
 # Group labels for clust3
 clust3_labels <- c('gravesii','grav. x emoryi','emoryi','canbyi',
                    'hypo.','grav. x hypo.')
@@ -228,6 +229,9 @@ text(x=clust3_labelPositions_multipleK, y=-0.08, srt=35, adj=1, xpd=TRUE, labels
 axis(1, at=c(79,88.3), labels = FALSE, line=0.4, lwd = 2, lwd.ticks = 0)
 
 # %%%% SUBSET K VALUES ----
+# Label and tick mark positions (Multiple K values)
+clust3_labelPositions_multipleK <- c(9, 24, 40, 52, 64.5, 77)
+clust3_tickMarks_multipleK <- c(0,15.8,30.4,47.2,56.8,72.6)
 # Plot K values 2 through 4
 Xpos <- Plot.AllK(QUTA_clust3_clumppDir, Ks=2:4, QUTA_colors, sampleNames = QUTA_clust3_sampleNames, 
                   majorClust = TRUE, tickMarks=clust3_tickMarks_multipleK, popNamesPresent = FALSE)
@@ -242,6 +246,31 @@ Xpos <- Plot.AllK(QUTA_clust3_clumppDir, Ks=5:7, QUTA_colors, sampleNames = QUTA
 text(x=clust3_labelPositions_multipleK, y=-0.06, srt=35, adj=1, xpd=TRUE, labels=clust3_labels, cex=1.2)
 # Add horizontal bar, indicating tardifolia individuals
 axis(1, at=c(79,88.3), labels = FALSE, line=0.4, lwd = 2, lwd.ticks = 0)
+
+# %%%% %%%% MANUSCRIPT DRAFT 1, FIGURE S3: SUBSET K VALUES ----
+# Group labels for Clust3
+clust3_labels <- c('gravesii','graciliformis','emoryi, robusta','canbyi, miq.',
+                   'hypoleucoides', 'scytophylla','grav. x hypo.', 'tardifolia')
+# Label and tick mark positions (Multiple K values)
+clust3_labelPositions_multipleK <- c(9, 26, 39, 53, 64.2, 71, 78.4, 84.2)
+clust3_tickMarks_multipleK <- c(0,15.8,30.4,46.2,56.8,66.2,72.6,78.8)
+# PLOT K VALUES 2 THROUGH 4
+Xpos <- Plot.AllK(QUTA_clust3_clumppDir, Ks=2:4, QUTA_colors, sampleNames = QUTA_clust3_sampleNames, 
+                  majorClust = TRUE, tickMarks=clust3_tickMarks_multipleK, popNamesPresent = FALSE)
+# Add group labels
+text(x=clust3_labelPositions_multipleK, y=1.03, srt=0, adj=1, xpd=TRUE, 
+     labels=clust3_labels, cex=1.2, font=2)
+# Add sample names below the graph
+text(x=Xpos, y=-0.013, srt=87, adj=1, xpd=TRUE, labels=QUTA_clust3_sampleNames, cex=1.2)
+
+# PLOT K VALUES 5 THROUGH 7
+Xpos <- Plot.AllK(QUTA_clust3_clumppDir, Ks=5:7, QUTA_colors, sampleNames = QUTA_clust3_sampleNames, 
+                  majorClust = TRUE, tickMarks=clust3_tickMarks_multipleK, popNamesPresent = FALSE)
+# Add group labels
+text(x=clust3_labelPositions_multipleK, y=1.03, srt=0, adj=1, xpd=TRUE, 
+     labels=clust3_labels, cex=1.2, font=2)
+# Add sample names below the graph
+text(x=Xpos, y=-0.013, srt=87, adj=1, xpd=TRUE, labels=QUTA_clust3_sampleNames, cex=1.2)
 
 # %%%% K=4 VALUES ----
 # Specify graphing parameters to plot single K value
@@ -328,7 +357,7 @@ text(x=1.005, y=Ypos, srt=0, adj=0, xpd=TRUE, labels=QUTA_clust3_sampleNamesAndD
 
 # %%%% MANUSCRIPT DRAFT 1, FIGURE 2: K=4, HORIZONTAL, SAMPLE NAMES ----
 # Tick mark positions for K=4, horizontal
-clust3_tickMarks_K4_H <- c(0,36,70.1,108,130,166)
+clust3_tickMarks_K4_H <- c(0,40.6,80.9,119,145.4,168,186,203)
 # Read in text file of sample names and dets
 QUTA_clust3_sampleNamesAndDets <- 
   as.list(read.csv2("/RAID1/QUTA_TX_RedOaks/Clustering/STRUCTURE/Clust3_seOnly/Clust3_sampleNamesAndDets.csv", 
@@ -338,7 +367,6 @@ QUTA_clust3_sampleNamesAndDets <- unname(unlist(QUTA_clust3_sampleNamesAndDets))
 # Replace commas with semicolons
 QUTA_clust3_sampleNamesAndDets <- sub(',',' ; ', QUTA_clust3_sampleNamesAndDets)
 # Specify graphing parameters to plot single K value horizontally
-dev.off()
 par(mar = c(2,0.2,16.75,12) + 0.1, oma = c(0,0.2,1.2,0.5), mgp = c(1,1,0))
 # Plot K = 4 on its own, horizontally
 Ypos <- Plot.K_H(QUTA_clust3_clumppDir, 4, QUTA_colors, majorClust=TRUE, 
@@ -352,7 +380,7 @@ axis(4, at=clust3_tickMarks_K4_H, labels = FALSE, lwd.ticks = 3, tck=-0.01, xpd=
 axis(4, at=clust3_tickMarks_K4_H, labels = FALSE, lwd.ticks = 3, tck=1.005, xpd=TRUE)
 # Add sample names along the graph (on the right)
 text(x=1.005, y=Ypos, srt=0, adj=0, xpd=TRUE, labels=QUTA_clust3_sampleNamesAndDets, cex=0.7)
-# Save image to PNG: height 1000, width 633
+# Save image to PNG: height 1200, width 660
 
 # %%%% K=4 VALUES, SUMMARY CLUSTERS, HORIZONTALLY ----
 # Read in text file of sample names and dets
