@@ -11,7 +11,7 @@ pacman::p_load(adegenet, dartR, vcfR, poppr, ggplot2, ggrepel, cowplot, viridis)
 QUTA_TRO_wd <- '/RAID1/QUTA_TX_RedOaks/Genotyping/SNP_Calling/Output/'
 setwd(QUTA_TRO_wd)
 
-# %%% READ IN AND FORMAT DATA %%% ----
+# %%% READ IN AND FORMAT DATA ----
 # Read in the VCF and convert it to a genind
 QUTA_Clust3_vcf <- read.vcfR('Clust3_seOnly/pop_R98/populations.snps.vcf')
 QUTA_Clust3_genlight <- vcfR2genlight(QUTA_Clust3_vcf)
@@ -22,6 +22,165 @@ QUTA_Clust3_dets <-
   as.factor(read.csv('Clust3_seOnly/pop_R98/Clust3_NamesAndDets.csv', header=TRUE)[,3])
 QUTA_Clust3_genlight@pop <- QUTA_Clust3_dets 
 
+# %%% ALL INDIVIDUALS %%% ----
+# %%% RUN PCA ----
+# Run PCA on genlight object, selecting 2 axes
+QUTA_Clust3_PCA <- glPca(QUTA_Clust3_genlight, nf = 2)
+# Extract PCA scores
+pca_df <- as.data.frame(QUTA_Clust3_PCA$scores)
+pca_df$Taxa <- pop(QUTA_Clust3_genlight)
+# Extract variances, and used to build labels for PC axes
+var_exp <- round(100 * QUTA_Clust3_PCA$eig / sum(QUTA_Clust3_PCA$eig), 1)
+pc_labels <- paste0("PC", 1:length(var_exp), " (", var_exp, "%)")
+
+# %%% PLOTTING WITH LABELS ----
+# Select one representative per population for labeling
+pca_labels <- pca_df %>%
+  group_by(Taxa) %>%
+  slice(1)  # Take the first occurrence per population
+
+# Main PCA plot
+pca_plot <- ggplot(pca_df, aes(x = PC1, y = PC2, color = Taxa)) +
+  geom_point(size = 3, alpha = 0.8) +
+  scale_color_viridis_d(option = "B", begin = 0, end = 0.9) +
+  labs(
+    title = "Q. tardifolia and Texas Red Oaks",
+    subtitle = "84 individuals, 9,954 loci, R98",
+    x = pc_labels[1],
+    y = pc_labels[2],
+    color = "Taxa"
+  ) +
+  geom_text_repel(
+    data = pca_labels,
+    aes(label = Taxa),
+    size = 5,
+    family = "mono",
+    max.overlaps = Inf,
+    nudge_x = 0.04 * (max(pca_df$PC1) - min(pca_df$PC1)),  
+    nudge_y = 0.04 * (max(pca_df$PC2) - min(pca_df$PC2)),  
+    force = 2,  
+    segment.size = 0.7,  
+    box.padding = 1.2,
+    show.legend = FALSE
+  ) +
+  theme_minimal() +
+  theme(
+    text = element_text(size = 17),
+    legend.position = "right"
+  )
+
+# Scree plot (minimal, no x-axis labels)
+scree_df <- data.frame(
+  PC = factor(paste0("PC", 1:length(var_exp)), levels = paste0("PC", 1:length(var_exp))),
+  Variance = var_exp
+)
+scree_plot <- ggplot(scree_df, aes(x = PC, y = Variance)) +
+  geom_bar(stat = "identity", fill = "gray60") +
+  labs(
+    title = "Scree Plot",
+    x = NULL,
+    y = "Variance (%)"
+  ) +
+  theme_minimal(base_size = 10) +
+  theme(
+    axis.text.x = element_blank(),
+    axis.ticks.x = element_blank(),
+    plot.title = element_text(size = 10, hjust = 0.5),
+    axis.title.y = element_text(size = 9)
+  )
+
+# Combine PCA and inset scree plot
+final_plot <- ggdraw() +
+  draw_plot(pca_plot) +
+  draw_plot(scree_plot, x = 0.03, y = 0.1, width = 0.23, height = 0.23)
+final_plot
+
+# %%% SUBSET DATASET %%% ----
+# Removing individuals with unknown dets, two weird hybrids
+# (miquihuanensis- autopista and hypoxantha x gravesii), miquihuaensis,
+# hypoxantha, robusta, and one oddball canbyi
+QUTA_Clust3_indsRemove <- c('SYST-MOR-0006540','SYST-MOR-0006541', 'SYST-MOR-0006542',
+                            'SYST-MOR-0006552','SYST-MOR-0006694','SYST-MOR-0006099',
+                            'SYST-MOR-0006235','SYST-MOR-0006654', 'SYST-MOR-0007328',
+                            'SYST-MOR-0007329', 'SYST-MOR-0006484', 'SYST-MOR-0006548',
+                            'SYST-MOR-0006599', 'SYST-MOR-0007305')
+# Subset genlight object
+QUTA_Clust3_genlight <- 
+  QUTA_Clust3_genlight[!indNames(QUTA_Clust3_genlight) %in% QUTA_Clust3_indsRemove, ]
+
+# %%% RUN PCA ----
+# Run PCA on genlight object, selecting 2 axes
+QUTA_Clust3_PCA <- glPca(QUTA_Clust3_genlight, nf = 2)
+# Extract PCA scores
+pca_df <- as.data.frame(QUTA_Clust3_PCA$scores)
+pca_df$Taxa <- pop(QUTA_Clust3_genlight)
+# Extract variances, and used to build labels for PC axes
+var_exp <- round(100 * QUTA_Clust3_PCA$eig / sum(QUTA_Clust3_PCA$eig), 1)
+pc_labels <- paste0("PC", 1:length(var_exp), " (", var_exp, "%)")
+
+# %%% PLOTTING WITH LABELS ----
+# Select one representative per population for labeling
+pca_labels <- pca_df %>%
+  group_by(Taxa) %>%
+  slice(1)  # Take the first occurrence per population
+
+# Main PCA plot
+pca_plot <- ggplot(pca_df, aes(x = PC1, y = PC2, color = Taxa)) +
+  geom_point(size = 3, alpha = 0.8) +
+  scale_color_viridis_d(option = "B", begin = 0, end = 0.9) +
+  labs(
+    title = "Q. tardifolia and Texas Red Oaks",
+    subtitle = "70 individuals, 9,954 loci, R98",
+    x = pc_labels[1],
+    y = pc_labels[2],
+    color = "Taxa"
+  ) +
+  geom_text_repel(
+    data = pca_labels,
+    aes(label = Taxa),
+    size = 5,
+    family = "mono",
+    max.overlaps = Inf,
+    nudge_x = 0.1 * (max(pca_df$PC1) - min(pca_df$PC1)),  
+    nudge_y = 0.08 * (max(pca_df$PC2) - min(pca_df$PC2)),  
+    force = 2,  
+    segment.size = 0.7,  
+    box.padding = 1.2,
+    show.legend = FALSE
+  ) +
+  theme_minimal() +
+  theme(
+    text = element_text(size = 17),
+    legend.position = "right"
+  )
+
+# Scree plot (minimal, no x-axis labels)
+scree_df <- data.frame(
+  PC = factor(paste0("PC", 1:length(var_exp)), levels = paste0("PC", 1:length(var_exp))),
+  Variance = var_exp
+)
+scree_plot <- ggplot(scree_df, aes(x = PC, y = Variance)) +
+  geom_bar(stat = "identity", fill = "gray60") +
+  labs(
+    title = "Scree Plot",
+    x = NULL,
+    y = "Variance (%)"
+  ) +
+  theme_minimal(base_size = 10) +
+  theme(
+    axis.text.x = element_blank(),
+    axis.ticks.x = element_blank(),
+    plot.title = element_text(size = 10, hjust = 0.5),
+    axis.title.y = element_text(size = 9)
+  )
+
+# Combine PCA and inset scree plot
+final_plot <- ggdraw() +
+  draw_plot(pca_plot) +
+  draw_plot(scree_plot, x = 0.03, y = 0.1, width = 0.23, height = 0.23)
+final_plot
+
+# %%% SUBSET DATASET (NO SCYTOPHYLLA) %%% ----
 # Removing individuals with unknown dets, two weird hybrids
 # (miquihuanensis- autopista and hypoxantha x gravesii), miquihuaensis,
 # and hypoxantha
@@ -37,7 +196,7 @@ QUTA_Clust3_indsRemove <- c(QUTA_Clust3_indsRemove, 'OAK-MOR-000896', 'OAK-MOR-0
 QUTA_Clust3_genlight <- 
   QUTA_Clust3_genlight[!indNames(QUTA_Clust3_genlight) %in% QUTA_Clust3_indsRemove, ]
 
-# %%% RUN PCA %%% ----
+# %%% RUN PCA ----
 # Run PCA on genlight object, selecting 2 axes
 QUTA_Clust3_PCA <- glPca(QUTA_Clust3_genlight, nf = 2)
 # Extract PCA scores
@@ -47,7 +206,7 @@ pca_df$Taxa <- pop(QUTA_Clust3_genlight)
 var_exp <- round(100 * QUTA_Clust3_PCA$eig / sum(QUTA_Clust3_PCA$eig), 1)
 pc_labels <- paste0("PC", 1:length(var_exp), " (", var_exp, "%)")
 
-# %%% PLOTTING WITH LABELS %%% ----
+# %%% PLOTTING WITH LABELS ----
 # Select one representative per population for labeling
 pca_labels <- pca_df %>%
   group_by(Taxa) %>%
@@ -59,7 +218,7 @@ pca_plot <- ggplot(pca_df, aes(x = PC1, y = PC2, color = Taxa)) +
   scale_color_viridis_d(option = "B", begin = 0, end = 0.9) +
   labs(
     title = "Q. tardifolia and Texas Red Oaks",
-    subtitle = "9,954 loci, R98",
+    subtitle = "64 individuals, 9,954 loci, R98",
     x = pc_labels[1],
     y = pc_labels[2],
     color = "Taxa"
