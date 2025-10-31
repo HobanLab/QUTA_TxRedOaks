@@ -17,6 +17,6 @@ based on which clustering step (prelim, Clust2, or Clust3), as well as a folder 
 
 3. [`hybridAnalyses`](https://github.com/HobanLab/QUTA_TRO/tree/main/C_hybridAnalyses) contains the scripts used to validate the hybridization patterns found during the clustering steps. There are two subfolders: one containing the scripts used to run the species networks applying quartets ([SNaQ](https://juliaphylo.github.io/SNaQ.jl/stable/)) software, and one containing the R script and output of the f-stats analysis (which presently isn't included in the main results of this project.) 
 
-There is also an R script used to run the [nQuire](https://github.com/clwgg/nQuire) software (for assessing polyploidy) and for conducting heterozygosity analyses (e.g. using [triangulaR](https://omys-omics.github.io/triangulaR/index.html)).
+  There is also an R script used to run the [nQuire](https://github.com/clwgg/nQuire) software (for   assessing polyploidy) and for conducting heterozygosity analyses (e.g. using   [triangulaR](https://omys-omics.github.io/triangulaR/index.html)).
 
 4. [`Mapping`](https://github.com/HobanLab/QUTA_TxRedOaks/tree/main/D_Mapping) contains the R script used to generate an HTML map of the samples. This map was largely used internally.
