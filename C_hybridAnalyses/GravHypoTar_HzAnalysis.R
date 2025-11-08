@@ -74,10 +74,10 @@ GHT_popmap <- read.table('GravHypoTar2_popList.csv', header = TRUE, sep=',')
 # of this amount or greater in parental groups are considered for calculating interclass heterozygosity)
 alleleFreqThresh <- 0.75
 # Create a new vcfR object composed only of sites above the given allele frequency difference threshold
-GHT_vcf_diff <- 
+GHT_vcf_diff_0.75 <- 
   alleleFreqDiff(vcfR=GHT_vcf, pm=GHT_popmap, p1="GRAV", p2="HYPO", difference=alleleFreqThresh)
 # Calculate hybrid index and heterozygosity for each sample. Values are returned in a data.frame
-GHT_hybridIndex <- hybridIndex(vcfR=GHT_vcf_diff, pm=GHT_popmap, p1="GRAV", p2="HYPO")
+GHT_hybridIndex <- hybridIndex(vcfR=GHT_vcf_diff_0.75, pm=GHT_popmap, p1="GRAV", p2="HYPO")
 
 # PLOTTING
 # Specify a vector of colors
@@ -86,37 +86,47 @@ GHT_cols <- c("#af8dc3", "#7fbf7b", "#bababa", "#878787", "#762a83", "#1b7837")
 tri_plot <- triangulaR::triangle.plot(GHT_hybridIndex, colors=GHT_cols, cex=3)
 # Print the allele frequency threshold value and the number of differentiated sites
 tri_plot + annotate('text', x=0.8, y=0.9, label=paste0('Allele frequency threshold: ', alleleFreqThresh))+ 
-  annotate('text', x=0.8, y=0.8, label=paste0('Number of sites: ', nrow(GHT_vcf_diff@fix)))
+  annotate('text', x=0.8, y=0.8, label=paste0('Number of sites: ', nrow(GHT_vcf_diff_0.75@fix)))
 
 # Repeat the process, but using a higher allele frequency threshold (0.9)
 alleleFreqThresh <- 0.9
-GHT_vcf_diff <- 
+GHT_vcf_diff_0.9 <- 
   alleleFreqDiff(vcfR=GHT_vcf, pm=GHT_popmap, p1="GRAV", p2="HYPO", difference=alleleFreqThresh)
-GHT_hybridIndex <- hybridIndex(vcfR=GHT_vcf_diff, pm=GHT_popmap, p1="GRAV", p2="HYPO")
+GHT_hybridIndex <- hybridIndex(vcfR=GHT_vcf_diff_0.9, pm=GHT_popmap, p1="GRAV", p2="HYPO")
 # Generate a triangle plot
 tri_plot <- triangulaR::triangle.plot(GHT_hybridIndex, colors=GHT_cols, cex=3)
 tri_plot + annotate('text', x=0.8, y=0.9, label=paste0('Allele frequency threshold: ', alleleFreqThresh)) + 
-  annotate('text', x=0.8, y=0.8, label=paste0('Number of sites: ', nrow(GHT_vcf_diff@fix)))
-
-# Repeat the process, but using a higher allele frequency threshold (1.0)
-alleleFreqThresh <- 1
-# GHT_vcf_diff <- 
-  alleleFreqDiff(vcfR=GHT_vcf, pm=GHT_popmap, p1="GRAV", p2="HYPO", difference=alleleFreqThresh)
-GHT_hybridIndex <- hybridIndex(vcfR=GHT_vcf_diff, pm=GHT_popmap, p1="GRAV", p2="HYPO")
-# Generate a triangle plot
-tri_plot <- triangulaR::triangle.plot(GHT_hybridIndex, colors=GHT_cols, cex=3)
-tri_plot + annotate('text', x=0.8, y=0.9, label=paste0('Allele frequency threshold: ', alleleFreqThresh))+ 
-  annotate('text', x=0.8, y=0.8, label=paste0('Number of sites: ', nrow(GHT_vcf_diff@fix)))
+  annotate('text', x=0.8, y=0.8, label=paste0('Number of sites: ', nrow(GHT_vcf_diff_0.9@fix)))
 
 # FILE CONVERSION STEPS, FOR NEWHYBRIDS ANALYSIS
 # The commands below are used to convert the VCF of 211 fixed differences to a
 # genepop object. This was used in a separate analysis.
-write.vcf(GHT_vcf_diff, file='QUTA_GravHypoTar2_R98_AFT1.vcf')
+write.vcf(GHT_vcf_diff_0.9, file='QUTA_GravHypoTar2_R98_AFT09.vcf')
+# Create genlight from VCF, and then convert genlight to genepop file
+QUTA_GravHypoTar2_AFT0.9_GL <- gl.read.vcf('QUTA_GravHypoTar2_R98_AFT09.vcf')
+QUTA_GravHypoTar2_AFT0.9_GP <- 
+  gl2genepop(QUTA_GravHypoTar2_AFT0.9_GL, outfile = 'QUTA_GravHypoTar2_R98_AFT09.gen',
+             outpath = './NewHybridsInputs/')
+
+# Repeat the process, but using a higher allele frequency threshold (1.0)
+alleleFreqThresh <- 1
+GHT_vcf_diff_1 <-
+  alleleFreqDiff(vcfR=GHT_vcf, pm=GHT_popmap, p1="GRAV", p2="HYPO", difference=alleleFreqThresh)
+GHT_hybridIndex <- hybridIndex(vcfR=GHT_vcf_diff_1, pm=GHT_popmap, p1="GRAV", p2="HYPO")
+# Generate a triangle plot
+tri_plot <- triangulaR::triangle.plot(GHT_hybridIndex, colors=GHT_cols, cex=3)
+tri_plot + annotate('text', x=0.8, y=0.9, label=paste0('Allele frequency threshold: ', alleleFreqThresh))+ 
+  annotate('text', x=0.8, y=0.8, label=paste0('Number of sites: ', nrow(GHT_vcf_diff_1@fix)))
+
+# FILE CONVERSION STEPS, FOR NEWHYBRIDS ANALYSIS
+# The commands below are used to convert the VCF of 211 fixed differences to a
+# genepop object. This was used in a separate analysis.
+write.vcf(GHT_vcf_diff_1, file='QUTA_GravHypoTar2_R98_AFT1.vcf')
 # Create genlight from VCF, and then convert genlight to genepop file
 QUTA_GravHypoTar2_AFT1_GL <- gl.read.vcf('QUTA_GravHypoTar2_R98_AFT1.vcf')
 QUTA_GravHypoTar2_AFT1_GP <- 
   gl2genepop(QUTA_GravHypoTar2_AFT1_GL, outfile = 'QUTA_GravHypoTar2_R98_AFT1.gen',
-             outpath = './')
+             outpath = './NewHybridsInputs/')
 
 # %%%% ROUND 1, NOVEMBER 2024: COMPLETE DATASET %%%% ---- 
 # Specify the filepath to the Stacks populations directory for the Clust 3 dataset
