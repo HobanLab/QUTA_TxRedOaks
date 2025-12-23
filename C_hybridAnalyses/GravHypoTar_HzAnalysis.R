@@ -101,9 +101,9 @@ tri_plot + annotate('text', x=0.8, y=0.9, label=paste0('Allele frequency thresho
 # FILE CONVERSION STEPS, FOR NEWHYBRIDS ANALYSIS
 # The commands below are used to convert the VCF of 211 fixed differences to a
 # genepop object. This was used in a separate analysis.
-write.vcf(GHT_vcf_diff_0.9, file='QUTA_GravHypoTar2_R98_AFT09.vcf')
+write.vcf(GHT_vcf_diff_0.9, file='NewHybridsInputs/QUTA_GravHypoTar2_R98_AFT09.vcf')
 # Create genlight from VCF, and then convert genlight to genepop file
-QUTA_GravHypoTar2_AFT0.9_GL <- gl.read.vcf('QUTA_GravHypoTar2_R98_AFT09.vcf')
+QUTA_GravHypoTar2_AFT0.9_GL <- gl.read.vcf('NewHybridsInputs/QUTA_GravHypoTar2_R98_AFT09.vcf')
 QUTA_GravHypoTar2_AFT0.9_GP <- 
   gl2genepop(QUTA_GravHypoTar2_AFT0.9_GL, outfile = 'QUTA_GravHypoTar2_R98_AFT09.gen',
              outpath = './NewHybridsInputs/')
@@ -121,9 +121,9 @@ tri_plot + annotate('text', x=0.8, y=0.9, label=paste0('Allele frequency thresho
 # FILE CONVERSION STEPS, FOR NEWHYBRIDS ANALYSIS
 # The commands below are used to convert the VCF of 211 fixed differences to a
 # genepop object. This was used in a separate analysis.
-write.vcf(GHT_vcf_diff_1, file='QUTA_GravHypoTar2_R98_AFT1.vcf')
+write.vcf(GHT_vcf_diff_1, file='NewHybridsInputs/QUTA_GravHypoTar2_R98_AFT1.vcf')
 # Create genlight from VCF, and then convert genlight to genepop file
-QUTA_GravHypoTar2_AFT1_GL <- gl.read.vcf('QUTA_GravHypoTar2_R98_AFT1.vcf')
+QUTA_GravHypoTar2_AFT1_GL <- gl.read.vcf('NewHybridsInputs/QUTA_GravHypoTar2_R98_AFT1.vcf')
 QUTA_GravHypoTar2_AFT1_GP <- 
   gl2genepop(QUTA_GravHypoTar2_AFT1_GL, outfile = 'QUTA_GravHypoTar2_R98_AFT1.gen',
              outpath = './NewHybridsInputs/')
