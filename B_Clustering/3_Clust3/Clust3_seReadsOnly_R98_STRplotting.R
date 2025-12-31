@@ -336,10 +336,9 @@ QUTA_clust3_sampleNamesAndDets <- unname(unlist(QUTA_clust3_sampleNamesAndDets))
 QUTA_clust3_sampleNamesAndDets <- sub(',',' ; ', QUTA_clust3_sampleNamesAndDets)
 # Specify graphing parameters to plot single K value horizontally
 dev.off()
-# par(mar = c(2,0.2,15,12) + 0.1, oma = c(0,0.2,1.2,0.5), mgp = c(1,1,0))
 par(mar = c(2,0.2,19.5,12) + 0.1, oma = c(0,0.2,1.2,0.5), mgp = c(1,1,0))
-# # Call pdf command, to save plots to disk
-# png(file = paste0(QUTA_imageOutDir, "Fig2_STR_K4.png"), width = 795, height = 1200)
+# Call png command, to save plots to disk
+png(file = paste0(QUTA_imageOutDir, "Fig2_STR_K4.png"), width = 795, height = 1200)
 # Plot K = 4 on its own, horizontally
 Ypos <- Plot.K_H(QUTA_clust3_clumppDir, 4, QUTA_colors, majorClust=TRUE, 
                  popNamesPresent=FALSE, sampleNames = QUTA_clust3_sampleNames, 
