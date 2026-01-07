@@ -282,7 +282,7 @@ final_plot <- plot_grid(
 )
 
 # Generate the final plot, as PDF
-pdf(file = paste0(imageOut, "GravHypoTar_RangeMap_TEST.pdf"), 
+pdf(file = paste0(imageOut, "GravHypoTar_RangeMap.pdf"), 
     width = 14.5, height = 7.5)
 final_plot
 dev.off()
