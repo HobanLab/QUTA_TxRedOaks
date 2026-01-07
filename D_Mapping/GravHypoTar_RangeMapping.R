@@ -4,7 +4,8 @@
 
 # This script is used to make a map of the ranges of two of the species in
 # the study (Q. gravesii and hypoleucoides). Overlaid on this map are points
-# corresponding to the samples included in the study.
+# corresponding to the samples included in the study. The final output is a 
+# PDF, which is saved to a specified directory. 
 
 # Load necessary libraries
 pacman::p_load(sf, terra, rgbif, ggplot2, dplyr, geojsonsf, rnaturalearth,
@@ -51,6 +52,11 @@ samples_sf <- st_as_sf(
   coords = c("Long", "Lat"),
   crs = 4326
 )
+# Specify order of taxa
+samples_sf$Taxon <- factor(
+  samples_sf$Taxon,
+  levels = c("gravesii", "hypoleucoides", "hybrid")
+)
 # Combine ranges into a single object
 ranges <- bind_rows(
   QUGR_range %>% mutate(species = "Quercus gravesii"),
@@ -66,7 +72,7 @@ countries <- ne_countries(
   dplyr::filter(iso_a3 %in% c("USA", "MEX")) |>
   st_transform(4326)
 # Check if DEM has already been downloaded and processed; if it has, just read
-# in the existin .Rdata file
+# in the existin .Rdata file. Rasterizing the DEM is time-consuming, hence these commands.
 if(file.exists('DEM.Rdata')){
   dem <- readRDS('DEM.Rdata')
 } else{
@@ -79,8 +85,6 @@ if(file.exists('DEM.Rdata')){
   # Rasterize and crop DEM, then convert to data.frame
   dem <- rast(dem)
   dem <- crop(dem, ext(-115, -95, 25, 38))
-  # dem_df <- as.data.frame(dem, xy = TRUE)
-  # colnames(dem_df) <- c("lon", "lat", "elevation")
   # Save original DEM to disk
   saveRDS(dem, file='DEM.Rdata')
 }
@@ -104,13 +108,25 @@ dem_crop <- crop(
   dem,
   ext(bbox["xmin"], bbox["xmax"], bbox["ymin"], bbox["ymax"])
 )
-dem_crop <- as.data.frame(dem_crop, xy = TRUE)
-colnames(dem_crop) <- c("lon", "lat", "elevation")
-# Mask elevations
-dem_crop <- dem_crop %>%
-  mutate(
-    elev_mask = ifelse(elevation < 800, NA, elevation)
-  )
+
+# %%% BUILD HILLSHADE LAYER OFF OF DEM ----
+# Ensure DEM is projected (hillshade requires projected CRS)
+dem_proj <- project(dem, "EPSG:5070")  # NAD83 / Conus Albers
+# Derive slope and aspect
+slope  <- terrain(dem_proj, v = "slope", unit = "radians")
+aspect <- terrain(dem_proj, v = "aspect", unit = "radians")
+# Hillshade
+hillshade <- shade(slope, aspect, angle = 45, direction = 315)
+# Reproject back to WGS84 for plotting
+hillshade <- project(hillshade, "EPSG:4326")
+# Crop to study extent
+hillshade <- crop(
+  hillshade,
+  ext(bbox["xmin"], bbox["xmax"], bbox["ymin"], bbox["ymax"])
+)
+# Convert to data.frame
+hillshade_df <- as.data.frame(hillshade, xy = TRUE)
+colnames(hillshade_df) <- c("lon", "lat", "hillshade")
 
 # PLOTTING ----
 # Specify colors for sampling points
@@ -124,14 +140,14 @@ sample_colors <- c(
 main_map <- ggplot() +
   # Elevation background
   geom_raster(
-    data = dem_crop,
-    aes(lon, lat, fill = elev_mask),
-    alpha = 0.8
+    data = hillshade_df,
+    aes(lon, lat, fill = hillshade),
+    alpha = 0.6
   ) +
-  scale_fill_gradientn(
-    colors = c("grey95", "grey80", "grey60", "grey40"),
-    na.value = "white",
-    name = "Elevation (m)"
+  scale_fill_gradient(
+    low = "white",
+    high = "grey20",
+    guide = "none"
   ) +
   ggnewscale::new_scale_fill() +
   # Country boundaries
@@ -160,13 +176,13 @@ main_map <- ggplot() +
   geom_sf(
     data = dplyr::filter(samples_sf, Taxon != "hybrid"),
     aes(shape = Taxon, color = Taxon),
-    size = 2
+    size = 2.75
   ) +
   # Specify hybrids, with slightly larger size
   geom_sf(
     data = dplyr::filter(samples_sf, Taxon == "hybrid"),
     aes(shape = Taxon, color = Taxon),
-    size = 2.5
+    size = 3.25
   ) +
   # Use specified colors
   scale_color_manual(
@@ -188,7 +204,24 @@ main_map <- ggplot() +
     legend.box = "vertical",
     legend.margin = margin(0, 0, 0, 0),
     legend.box.margin = margin(0, 0, 0, 0),
-    legend.spacing.y = unit(5, "pt")
+    legend.spacing.y = unit(5, "pt") 
+  ) +
+  # Increase sizs of points in the legend
+  guides(
+    shape = guide_legend(override.aes = list(size = 5))
+  )
+
+# Adjust text sizes, in different parts of the figure
+main_map <- main_map +
+  theme(
+    axis.title.x = element_text(size = 16),
+    axis.title.y = element_text(size = 16),
+    
+    axis.text.x  = element_text(size = 14),
+    axis.text.y  = element_text(size = 14),
+    
+    legend.title = element_text(size = 14),
+    legend.text  = element_text(size = 13)
   )
 
 # Inset map
@@ -228,12 +261,12 @@ main_map_nolegend <- main_map_nolegend +
     plot.margin = margin(t = 4, r = 0, b = 5, l = -20)
   )
 
-# Stack the legends and the inset (to build a legend column)
+# Stack the legends and the inset (to build a legend column). First value in rel_heights adjusts inset height
 legend_column <- plot_grid(
   legend_grob,
   inset_map,
   ncol = 1,
-  rel_heights = c(3, 1)
+  rel_heights = c(2.6, 1)
 )
 # Adjusting spacing
 legend_column <- legend_column +
@@ -247,8 +280,9 @@ final_plot <- plot_grid(
   ncol = 2,
   rel_widths = c(5.2, 0.8)
 )
+
 # Generate the final plot, as PDF
-pdf(file = paste0(imageOut, "GravHypoTar_RangeMap.pdf"), 
+pdf(file = paste0(imageOut, "GravHypoTar_RangeMap_TEST.pdf"), 
     width = 14.5, height = 7.5)
 final_plot
 dev.off()
