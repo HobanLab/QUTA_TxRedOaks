@@ -206,7 +206,7 @@ main_map <- ggplot() +
     legend.box.margin = margin(0, 0, 0, 0),
     legend.spacing.y = unit(5, "pt") 
   ) +
-  # Increase sizs of points in the legend
+  # Increase sizes of points in the legend
   guides(
     shape = guide_legend(override.aes = list(size = 5))
   )
