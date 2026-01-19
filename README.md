@@ -1,4 +1,4 @@
-[![DOI](https://zenodo.org/badge/844774281.svg)](https://doi.org/10.5281/zenodo.18306919)
+[![DOI](https://zenodo.org/badge/latestdoi/844774281)](https://doi.org/10.5281/zenodo.18306919)
 
 # Overview
 This repository contains the code used for the population genetic analyses of _Quercus tardifolia_ and other Texas red oaks. The goals of these analyses are:
