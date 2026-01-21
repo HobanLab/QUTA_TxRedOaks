@@ -1,0 +1,85 @@
+Sample name,Updated Det (2026-01-13),"Q1 (""hypoleucoides"", dark blue)","Q2 (""gravesii"", light blue)","Q3 (""emoryi"", light green)","Q4 (""miquihuaensis"", dark green)"
+SYST-MOR-0006625,Quercus gravesii,0,0.9971,0.0008,0.0021
+SYST-MOR-0006626,Quercus gravesii,0.0001,0.9899,0,0.01
+SYST-MOR-0006627,Quercus gravesii,0,0.9962,0,0.0038
+SYST-MOR-0006628,Quercus gravesii,0.0011,0.9989,0,0
+SYST-MOR-0006553,Quercus gravesii,0,1,0,0
+SYST-MOR-0006556,Quercus gravesii,0,1,0,0
+SYST-MOR-0006557,Quercus gravesii,0,1,0,0
+SYST-MOR-0006558,Quercus gravesii,0,0.9997,0,0.0003
+SYST-MOR-0006588,Quercus gravesii,0,0.9956,0.0033,0.001
+SYST-MOR-0006590,Quercus gravesii,0.0009,0.9981,0,0.001
+SYST-MOR-0006594,Quercus gravesii,0.0003,0.9985,0,0.0011
+SYST-MOR-0007262,Quercus gravesii,0.0023,0.9976,0,0
+SYST-MOR-0007267,Quercus gravesii,0.0017,0.9981,0,0.0001
+SYST-MOR-0007268,Quercus gravesii,0.0003,0.9987,0,0.001
+SYST-MOR-0006589,Quercus sp?,0.0009,0.9972,0.0009,0.001
+SYST-MOR-0006539,Quercus gravesii,0,0.4273,0.5727,0
+SYST-MOR-0006546,Quercus gravesii,0,0.5572,0.4428,0
+SYST-MOR-0006540,Quercus (emoryi x gravesii),0,0.5519,0.4481,0
+SYST-MOR-0006541,Quercus (emoryi x gravesii),0,0.4889,0.5111,0
+SYST-MOR-0006542,Quercus (emoryi x gravesii),0,0.3201,0.6799,0
+SYST-MOR-0006543,Quercus (emoryi x gravesii),0,0.3203,0.6797,0
+SYST-MOR-0006548,Quercus (emoryi x gravesii),0.0001,0.2328,0.7671,0
+SYST-MOR-0006599,Quercus (emoryi x gravesii),0.001,0.5594,0.4395,0.0002
+SYST-MOR-0006610,Quercus (emoryi x gravesii) blobbier,0.0011,0.213,0.785,0.0008
+SYST-MOR-0006700,Quercus (emoryi x gravesii) blobbier,0.0702,0.0184,0.9114,0
+SYST-MOR-0006550,Quercus emoryi x ??,0.0002,0.0865,0.9133,0
+SYST-MOR-0006552,Quercus emoryi,0,0.0087,0.9913,0
+SYST-MOR-0006694,Quercus emoryi,0.0144,0.1678,0.8177,0.0001
+SYST-MOR-0006640,Quercus emoryi,0.001,0.0263,0.9727,0
+SYST-MOR-0007277,Quercus emoryi,0.0272,0.0099,0.9602,0.0028
+OAK-MOR-001228,Quercus emoryi,0.0012,0,0.9988,0
+OAK-MOR-000361,Quercus emoryi,0.0075,0,0.9925,0
+OAK-MOR-000414,Quercus emoryi,0.0324,0,0.9676,0
+SYST-MOR-0006533,Quercus emoryi,0.0009,0.0998,0.8982,0.001
+SYST-MOR-0006549,Quercus emoryi,0.0001,0.0104,0.9895,0
+SYST-MOR-0006485,Quercus graciliformis,0.0006,0.3212,0.6781,0
+SYST-MOR-0006487,Quercus graciliformis,0.0085,0.349,0.6425,0
+SYST-MOR-0006531,Quercus graciliformis,0.0015,0.2688,0.7297,0
+SYST-MOR-0006583,Quercus graciliformis,0.0335,0.5095,0.4531,0.0039
+SYST-MOR-0006595,Quercus graciliformis,0.0203,0.5454,0.4302,0.0042
+SYST-MOR-0006704,Quercus graciliformis,0.0218,0.0072,0.9689,0.0021
+SH-Q1902,Quercus graciliformis,0.0046,0.4069,0.5885,0.0001
+SH-Q1905,Quercus graciliformis,0.0028,0.3744,0.6228,0
+SYST-MOR-0006484,Quercus robusta,0.0003,0.1522,0.8475,0
+SYST-MOR-0007305,Quercus canbyi,0.2083,0.1341,0.3982,0.2594
+SYST-MOR-0007319,Quercus canbyi,0.0153,0.4188,0.0014,0.5646
+SYST-MOR-0007351,Quercus canbyi,0.037,0.4145,0.0031,0.5455
+SYST-MOR-0007352,Quercus canbyi,0.015,0.4534,0.0314,0.5003
+OAK-MOR-000443,Quercus canbyi,0.001,0.3978,0.0004,0.6008
+OAK-MOR-000543,Quercus canbyi,0.001,0.4472,0.0001,0.5517
+SYST-MOR-0006099,Quercus cf. miquihuanensis- autopista,0.4214,0.0161,0.1065,0.4561
+SYST-MOR-0006235,Quercus hypoxantha,0.0043,0.016,0.001,0.9786
+SYST-MOR-0007328,Quercus miquihuanensis,0,0,0,1
+SYST-MOR-0007329,Quercus miquihuanensis,0,0,0,1
+SYST-MOR-0006629,Quercus hypoleucoides,0.9747,0.0024,0.0224,0.0004
+SYST-MOR-0006633,Quercus hypoleucoides,0.9808,0.0172,0.001,0.0009
+SYST-MOR-0006636,Quercus hypoleucoides,0.9952,0,0.0048,0
+SYST-MOR-0007263,Quercus hypoleucoides,0.9698,0.03,0,0.0002
+SYST-MOR-0007274,Quercus hypoleucoides,0.9994,0.0006,0,0
+SYST-MOR-0007275,Quercus hypoleucoides,0.998,0.001,0.001,0
+OAK-MOR-000410,Quercus hypoleucoides,0.9982,0,0.0018,0
+OAK-MOR-000416,Quercus hypoleucoides,0.9992,0,0.0008,0
+SYST-MOR-0007280,Quercus aff hypoleucoides aff. sideoxyla,0.9777,0.0214,0.0009,0.0001
+OAK-UMN-000180,Quercus scytophylla,0.9983,0.0006,0,0.001
+OAK-UMN-000268,Quercus scytophylla,0.9893,0.0003,0.0005,0.0099
+OAK-MOR-000896,Quercus scytophylla,0.9994,0,0,0.0006
+OAK-MOR-000907,Quercus scytophylla,1,0,0,0
+OAK-MOR-001178,Quercus scytophylla,0.9993,0,0.0007,0
+OAK-MOR-001234,Quercus scytophylla,1,0,0,0
+SYST-MOR-0006630,Quercus (gravesii x hypoleucoides),0.4195,0.5805,0,0
+SYST-MOR-0006632,Quercus (gravesii x hypoleucoides),0.4084,0.5915,0.0001,0
+SYST-MOR-0006634,Quercus (gravesii x hypoleucoides),0.4029,0.584,0.0131,0
+SYST-MOR-0006635,Quercus (gravesii x hypoleucoides),0.5,0.5,0,0
+SYST-MOR-0006637,Quercus (gravesii x hypoleucoides),0.4776,0.5224,0,0
+SYST-MOR-0006639,Quercus (gravesii x hypoleucoides),0.5043,0.4957,0,0
+SYST-MOR-0006698,Quercus tardifolia,0.4919,0.506,0.0011,0.0009
+SYST-MOR-0006699,Quercus tardifolia,0.4661,0.4954,0.0295,0.009
+SYST-MOR-0007269,Quercus tardifolia,0.5219,0.4767,0.0009,0.0004
+SYST-MOR-0007270,Quercus tardifolia,0.5219,0.4452,0.0319,0.0009
+SYST-MOR-0007271,Quercus tardifolia,0.4921,0.5059,0.0009,0.001
+SYST-MOR-0007272,Quercus tardifolia,0.5198,0.3391,0.1393,0.0018
+SYST-MOR-0007278,Quercus tardifolia,0.4929,0.4968,0.0048,0.0055
+SYST-MOR-0006656,Quercus tardifolia,0.3141,0.4507,0.0018,0.2334
+SYST-MOR-0006654,Quercus hypoxantha x Q. gravesii,0.0065,0.6149,0.0006,0.378
