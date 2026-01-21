@@ -1,3 +1,5 @@
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.18306919.svg)](https://doi.org/10.5281/zenodo.18306919)
+
 # Overview
 This repository contains the code used for the population genetic analyses of _Quercus tardifolia_ and other Texas red oaks. The goals of these analyses are:
 1. determining how genetically distinctive _Q. tardifolia_ (QUTA) is
