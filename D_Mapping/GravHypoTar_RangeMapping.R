@@ -4,8 +4,9 @@
 
 # This script is used to make a map of the ranges of two of the species in
 # the study (Q. gravesii and hypoleucoides). Overlaid on this map are points
-# corresponding to the samples included in the study. The final output is a 
-# PDF, which is saved to a specified directory. 
+# corresponding to the samples included in the study. Two versions of the map
+# are generated: one using hillshade, and one using coloring to represent the DEM.
+# Both of these are are saved as PNG files to the disk.
 
 # Load necessary libraries
 pacman::p_load(sf, terra, rgbif, ggplot2, dplyr, geojsonsf, rnaturalearth,
@@ -16,6 +17,9 @@ setwd(QUTA_mappingDir)
 # Specify image output directory
 imageOut <- 
   '/home/akoontz/Documents/QUTA_TxRedOaks/Documentation/Images/GravHypoTar-RangeMaps_20251223/'
+# Specify width and length dimensions for images generated
+imageWidth <- 1300
+imageLength <- 700
 
 # %%% DOWNLOAD SHAPEFILES FOR GRAVESII/HYPOLEUCODIES RANGES ----
 # This code call commands for downloading geojson files corresponding to the
@@ -134,9 +138,9 @@ colnames(dem_df) <- c("lon", "lat", "elevation")
 # %%% PLOTTING, VERSION A: WITH HILLSHADE %%% ----
 # Specify colors for sampling points
 sample_colors <- c(
-  gravesii = "black",
-  hypoleucoides = "darkgreen",
-  hybrid = "orange"
+  gravesii = "darkred",
+  hypoleucoides = "darkblue",
+  hybrid = "green"
 )
 
 # Primary plotting call
@@ -197,7 +201,7 @@ main_map <- ggplot() +
     values = c(
       gravesii = 16,        # filled circle
       hypoleucoides = 17,   # filled triangle
-      hybrid = 4            # X
+      hybrid = 12            # square
     ),
     name = "Taxon"
   ) +
@@ -296,17 +300,17 @@ final_plot <- plot_grid(
 final_plot
 
 # Generate the final plot, as PDF
-pdf(file = paste0(imageOut, "GravHypoTar_Hillshade_RangeMap.pdf"), 
-    width = 14.5, height = 7.5)
+png(file = paste0(imageOut, "GravHypoTar_Hillshade_RangeMap.png"), 
+    width = imageWidth, height = imageLength)
 final_plot
 dev.off()
 
 # %%% PLOTTING, VERSION B: WITHOUT HILLSHADE (DEM) %%% ----
 # Specify colors for sampling points
 sample_colors <- c(
-  gravesii = "black",
-  hypoleucoides = "darkgreen",
-  hybrid = "orange"
+  gravesii = "darkred",
+  hypoleucoides = "darkblue",
+  hybrid = "green"
 )
 
 # Primary plotting call
@@ -366,7 +370,7 @@ main_map <- ggplot() +
     values = c(
       gravesii = 16,        # filled circle
       hypoleucoides = 17,   # filled triangle
-      hybrid = 4            # X
+      hybrid = 12            # square
     ),
     name = "Taxon"
   ) +
@@ -465,7 +469,7 @@ final_plot <- plot_grid(
 final_plot
 
 # Generate the final plot, as PDF
-pdf(file = paste0(imageOut, "GravHypoTar_DEM_RangeMap.pdf"), 
-    width = 14.5, height = 7.5)
+png(file = paste0(imageOut, "GravHypoTar_DEM_RangeMap.png"), 
+    width = imageWidth, height = imageLength)
 final_plot
 dev.off()
