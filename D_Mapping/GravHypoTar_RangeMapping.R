@@ -127,8 +127,11 @@ hillshade <- crop(
 # Convert to data.frame
 hillshade_df <- as.data.frame(hillshade, xy = TRUE)
 colnames(hillshade_df) <- c("lon", "lat", "hillshade")
+# Specify DEM background
+dem_df <- as.data.frame(dem_crop, xy = TRUE)
+colnames(dem_df) <- c("lon", "lat", "elevation")
 
-# PLOTTING ----
+# %%% PLOTTING, VERSION A: WITH HILLSHADE %%% ----
 # Specify colors for sampling points
 sample_colors <- c(
   gravesii = "black",
@@ -187,6 +190,15 @@ main_map <- ggplot() +
   # Use specified colors
   scale_color_manual(
     values = sample_colors,
+    name = "Taxon"
+  ) +
+  # Customize plotting characters for different taxa
+  scale_shape_manual(
+    values = c(
+      gravesii = 16,        # filled circle
+      hypoleucoides = 17,   # filled triangle
+      hybrid = 4            # X
+    ),
     name = "Taxon"
   ) +
   # Axes labels and theme
@@ -281,8 +293,179 @@ final_plot <- plot_grid(
   rel_widths = c(5.2, 0.8)
 )
 
+final_plot
+
 # Generate the final plot, as PDF
-pdf(file = paste0(imageOut, "GravHypoTar_RangeMap.pdf"), 
+pdf(file = paste0(imageOut, "GravHypoTar_Hillshade_RangeMap.pdf"), 
+    width = 14.5, height = 7.5)
+final_plot
+dev.off()
+
+# %%% PLOTTING, VERSION B: WITHOUT HILLSHADE (DEM) %%% ----
+# Specify colors for sampling points
+sample_colors <- c(
+  gravesii = "black",
+  hypoleucoides = "darkgreen",
+  hybrid = "orange"
+)
+
+# Primary plotting call
+main_map <- ggplot() +
+  geom_raster(
+  data = dem_df,
+  aes(lon, lat, fill = elevation),
+  alpha = 0.8
+  ) +
+  # Specify elevation gradient coloration
+  scale_fill_gradientn(
+    colors = c("grey95", "grey80", "grey60", "grey40"),
+    name = "Elevation (m)"
+  ) +
+  ggnewscale::new_scale_fill() +
+  # Country boundaries
+  geom_sf(
+    data = countries_crop,
+    fill = NA,
+    color = "black",
+    linewidth = 0.6
+  ) +
+  # Species ranges
+  geom_sf(
+    data = ranges_crop,
+    aes(fill = species),
+    color = "black",
+    alpha = 0.35
+  ) +
+  scale_fill_manual(
+    values = c(
+      "Quercus gravesii" = "firebrick3",
+      "Quercus hypoleucoides" = "steelblue3"
+    ),
+    name = "Species range"
+  ) +
+  # Sample points (change shapes AND colors); specify non-hybrids 
+  # first, to make sure hybrids are visible
+  geom_sf(
+    data = dplyr::filter(samples_sf, Taxon != "hybrid"),
+    aes(shape = Taxon, color = Taxon),
+    size = 2.75
+  ) +
+  # Specify hybrids, with slightly larger size
+  geom_sf(
+    data = dplyr::filter(samples_sf, Taxon == "hybrid"),
+    aes(shape = Taxon, color = Taxon),
+    size = 3.25
+  ) +
+  # Use specified colors
+  scale_color_manual(
+    values = sample_colors,
+    name = "Taxon"
+  ) +
+  # Customize plotting characters for different taxa
+  scale_shape_manual(
+    values = c(
+      gravesii = 16,        # filled circle
+      hypoleucoides = 17,   # filled triangle
+      hybrid = 4            # X
+    ),
+    name = "Taxon"
+  ) +
+  # Axes labels and theme
+  labs(
+    x = "Longitude",
+    y = "Latitude"
+  ) +
+  theme_bw() +
+  theme(
+    panel.grid = element_blank()
+  ) +
+  # Adjust spacing of the legends, bringing them closer to the main map
+  theme(
+    legend.position = "right",
+    legend.box = "vertical",
+    legend.margin = margin(0, 0, 0, 0),
+    legend.box.margin = margin(0, 0, 0, 0),
+    legend.spacing.y = unit(5, "pt") 
+  ) +
+  # Increase sizes of points in the legend
+  guides(
+    shape = guide_legend(override.aes = list(size = 5))
+  )
+
+# Adjust text sizes, in different parts of the figure
+main_map <- main_map +
+  theme(
+    axis.title.x = element_text(size = 16),
+    axis.title.y = element_text(size = 16),
+    
+    axis.text.x  = element_text(size = 14),
+    axis.text.y  = element_text(size = 14),
+    
+    legend.title = element_text(size = 14),
+    legend.text  = element_text(size = 13)
+  )
+
+# Inset map
+inset_map <- ggplot() +
+  geom_sf(
+    data = countries,
+    fill = "grey90",
+    color = "black",
+    linewidth = 0.3
+  ) +
+  geom_sf(
+    data = bbox_sfc,
+    fill = NA,
+    color = "black",
+    linewidth = 0.8
+  ) +
+  coord_sf(xlim = c(-125, -85), ylim = c(15, 50)) +
+  theme_void() +
+  theme(
+    panel.border = element_rect(color = "black", fill = NA, linewidth = 0.6)
+  )
+
+# Specify margins around inset
+inset_map <- inset_map +
+  theme(
+    panel.border = element_rect(color = "black", fill = NA, linewidth = 0.6),
+    plot.margin = margin(t = -135, r = 5, b = 7, l = 5)
+  )
+
+# Extract the legends from the main map
+legend_grob <- get_legend(main_map)
+main_map_nolegend <- main_map +
+  theme(legend.position = "none")
+# Specify margins around main map
+main_map_nolegend <- main_map_nolegend +
+  theme(
+    plot.margin = margin(t = 4, r = 0, b = 5, l = -20)
+  )
+
+# Stack the legends and the inset (to build a legend column). First value in rel_heights adjusts inset height
+legend_column <- plot_grid(
+  legend_grob,
+  inset_map,
+  ncol = 1,
+  rel_heights = c(2.6, 1)
+)
+# Adjusting spacing
+legend_column <- legend_column +
+  theme(
+    plot.margin = margin(t = -120, r = 5, b = 5, l = -120)
+  )
+# Combined primary map and inset map (with primary above)
+final_plot <- plot_grid(
+  main_map_nolegend,
+  legend_column,
+  ncol = 2,
+  rel_widths = c(5.2, 0.8)
+)
+
+final_plot
+
+# Generate the final plot, as PDF
+pdf(file = paste0(imageOut, "GravHypoTar_DEM_RangeMap.pdf"), 
     width = 14.5, height = 7.5)
 final_plot
 dev.off()
