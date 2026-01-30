@@ -30,7 +30,7 @@ GravHypoTar_Complete$other$ind.metrics <-
   read.table('GravHypoTar2_popList.csv', header=T, sep = ',')
 pop(GravHypoTar_Complete) <- GravHypoTar_Complete$other$ind.metrics$pop
 # Check that population assignments look good
-cbind(indNames(GravHypoTar_Complete), as.character(pop(GravHypoTar_Complete)))
+cbind(indNames(GravHypoTar_Complete), as.character(GravHypoTar_Complete@pop))
 # Report heterozygosity and Fis values by population
 Hz_Pop <- gl.report.heterozygosity(GravHypoTar_Complete, method = 'pop')
 
@@ -38,7 +38,7 @@ Hz_Pop <- gl.report.heterozygosity(GravHypoTar_Complete, method = 'pop')
 Hz_Ind <- gl.report.heterozygosity(GravHypoTar_Complete, method = 'ind')
 # Add a column for cluster IDs, and subset to just Ho values (unclear what f.hom.ref and
 # f.hom.alt values are...variances?)
-Hz_Ind <- cbind.data.frame(Hz_Ind[,1], as.character(pop(GravHypoTar_Complete)), Hz_Ind[,2])
+Hz_Ind <- cbind.data.frame(Hz_Ind[,1], as.character(GravHypoTar_Complete@pop), Hz_Ind[,2])
 colnames(Hz_Ind) <- c('SampleNames', 'Clust', 'Ho')
 # Write heterozygosities to CSV
 write.table(Hz_Ind, 'HzValues_Downsampled_inds.csv', sep=',')
@@ -83,10 +83,19 @@ GHT_hybridIndex <- hybridIndex(vcfR=GHT_vcf_diff_0.75, pm=GHT_popmap, p1="GRAV",
 # Specify a vector of colors
 GHT_cols <- c("#af8dc3", "#7fbf7b", "#bababa", "#878787", "#762a83", "#1b7837")
 # Generate a triangle plot
-tri_plot <- triangulaR::triangle.plot(GHT_hybridIndex, colors=GHT_cols, cex=3)
+tri_plot_75 <- triangulaR::triangle.plot(GHT_hybridIndex, colors=GHT_cols, cex=3)
+# Update legend on the plot
+tri_plot_75 <- tri_plot_75 + theme(legend.position = c(0.85, 0.7)) +
+  scale_color_manual(
+    name   = "Taxa",
+    values = c("GRAV" = GHT_cols[[1]],
+               "HYPO" = GHT_cols[[2]],
+               "TARD" = GHT_cols[[3]]),
+    labels = c("Q. gravesii", "Q. hypoleucoides", "Q. tardifolia")
+  )
 # Print the allele frequency threshold value and the number of differentiated sites
-tri_plot + annotate('text', x=0.8, y=0.9, label=paste0('Allele frequency threshold: ', alleleFreqThresh))+ 
-  annotate('text', x=0.8, y=0.8, label=paste0('Number of sites: ', nrow(GHT_vcf_diff_0.75@fix)))
+tri_plot_75 + annotate('text', x=0.1, y=0.9, label=paste0('Allele frequency threshold: ', alleleFreqThresh))+ 
+  annotate('text', x=0.1, y=0.8, label=paste0('Number of sites: ', nrow(GHT_vcf_diff_0.75@fix)))
 
 # Repeat the process, but using a higher allele frequency threshold (0.9)
 alleleFreqThresh <- 0.9
@@ -94,9 +103,19 @@ GHT_vcf_diff_0.9 <-
   alleleFreqDiff(vcfR=GHT_vcf, pm=GHT_popmap, p1="GRAV", p2="HYPO", difference=alleleFreqThresh)
 GHT_hybridIndex <- hybridIndex(vcfR=GHT_vcf_diff_0.9, pm=GHT_popmap, p1="GRAV", p2="HYPO")
 # Generate a triangle plot
-tri_plot <- triangulaR::triangle.plot(GHT_hybridIndex, colors=GHT_cols, cex=3)
-tri_plot + annotate('text', x=0.8, y=0.9, label=paste0('Allele frequency threshold: ', alleleFreqThresh)) + 
-  annotate('text', x=0.8, y=0.8, label=paste0('Number of sites: ', nrow(GHT_vcf_diff_0.9@fix)))
+tri_plot_90 <- triangulaR::triangle.plot(GHT_hybridIndex, colors=GHT_cols, cex=3)
+# Update legend on the plot
+tri_plot_90 <- tri_plot_90 + theme(legend.position = c(0.85, 0.7)) +
+  scale_color_manual(
+    name   = "Taxa",
+    values = c("GRAV" = GHT_cols[[1]],
+               "HYPO" = GHT_cols[[2]],
+               "TARD" = GHT_cols[[3]]),
+    labels = c("Q. gravesii", "Q. hypoleucoides", "Q. tardifolia")
+  )
+# Print the allele frequency threshold value and the number of differentiated sites
+tri_plot_90 + annotate('text', x=0.1, y=0.9, label=paste0('Allele frequency threshold: ', alleleFreqThresh)) + 
+  annotate('text', x=0.1, y=0.8, label=paste0('Number of sites: ', nrow(GHT_vcf_diff_0.9@fix)))
 
 # FILE CONVERSION STEPS, FOR NEWHYBRIDS ANALYSIS
 # The commands below are used to convert the VCF of 211 fixed differences to a
@@ -114,9 +133,19 @@ GHT_vcf_diff_1 <-
   alleleFreqDiff(vcfR=GHT_vcf, pm=GHT_popmap, p1="GRAV", p2="HYPO", difference=alleleFreqThresh)
 GHT_hybridIndex <- hybridIndex(vcfR=GHT_vcf_diff_1, pm=GHT_popmap, p1="GRAV", p2="HYPO")
 # Generate a triangle plot
-tri_plot <- triangulaR::triangle.plot(GHT_hybridIndex, colors=GHT_cols, cex=3)
-tri_plot + annotate('text', x=0.8, y=0.9, label=paste0('Allele frequency threshold: ', alleleFreqThresh))+ 
-  annotate('text', x=0.8, y=0.8, label=paste0('Number of sites: ', nrow(GHT_vcf_diff_1@fix)))
+tri_plot_100 <- triangulaR::triangle.plot(GHT_hybridIndex, colors=GHT_cols, cex=3)
+# Update legend on the plot
+tri_plot_100 <- tri_plot_100 + theme(legend.position = c(0.85, 0.7)) +
+  scale_color_manual(
+    name   = "Taxa",
+    values = c("GRAV" = GHT_cols[[1]],
+               "HYPO" = GHT_cols[[2]],
+               "TARD" = GHT_cols[[3]]),
+    labels = c("Q. gravesii", "Q. hypoleucoides", "Q. tardifolia")
+  )
+# Print the allele frequency threshold value and the number of differentiated sites
+tri_plot_100 + annotate('text', x=0.1, y=0.9, label=paste0('Allele frequency threshold: ', alleleFreqThresh))+ 
+  annotate('text', x=0.1, y=0.8, label=paste0('Number of sites: ', nrow(GHT_vcf_diff_1@fix)))
 
 # FILE CONVERSION STEPS, FOR NEWHYBRIDS ANALYSIS
 # The commands below are used to convert the VCF of 211 fixed differences to a
@@ -147,7 +176,7 @@ GravHypoTar_Complete$other$ind.metrics <-
   read.table('GravHypoTar_popList.csv', header=T, sep = ',')
 pop(GravHypoTar_Complete) <- GravHypoTar_Complete$other$ind.metrics$pop
 # Check that population assignments look good
-cbind(indNames(GravHypoTar_Complete), as.character(pop(GravHypoTar_Complete)))
+cbind(indNames(GravHypoTar_Complete), as.character(GravHypoTar_Complete@pop))
 # Report heterozygosity and Fis values by population
 Hz_Pop <- gl.report.heterozygosity(GravHypoTar_Complete, method = 'pop')
 
@@ -155,7 +184,7 @@ Hz_Pop <- gl.report.heterozygosity(GravHypoTar_Complete, method = 'pop')
 Hz_Ind <- gl.report.heterozygosity(GravHypoTar_Complete, method = 'ind')
 # Add a column for cluster IDs, and subset to just Ho values (unclear what f.hom.ref and
 # f.hom.alt values are...variances?)
-Hz_Ind <- cbind.data.frame(Hz_Ind[,1], as.character(pop(GravHypoTar_Complete)), Hz_Ind[,2])
+Hz_Ind <- cbind.data.frame(Hz_Ind[,1], as.character(GravHypoTar_Complete@pop), Hz_Ind[,2])
 colnames(Hz_Ind) <- c('SampleNames', 'Clust', 'Ho')
 # Write heterozygosities to CSV
 write.table(Hz_Ind, 'HzValues_Complete_inds.csv', sep=',')
