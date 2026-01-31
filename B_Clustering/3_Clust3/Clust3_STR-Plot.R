@@ -34,15 +34,15 @@ text_x    <- 1.008         # x position of the labels (just to the right)
 # Specify text size for labels
 labelSize <- 5
 # Specify right hand margin
-right_margin_mm <- 120 # size of free text placed between segments
+right_margin_mm <- 130 # size of free text placed between segments
 
 # ---- SPECIFY CLASSIFICATION SEGMENTS ----
 # ymin / ymax are row numbers (after ordering) defining each block
 # label is the text shown for that block
 class_segments <- tibble(
-  ymin  = c(1, 16, 18.2, 24.2, 27, 36.5, 45, 53.2, 55.1, 64, 70.1, 76.1),
-  ymax  = c(14, 16.5, 22.5, 25, 34.8, 43, 50, 53.8, 62, 68.8, 74.8, 83),
-  label = c("Q. gravesii", "Q. gravesii", "Q. (emoryi x gravesii)", "Q. (emoryi x gravesii) blobbier",
+  ymin  = c(1, 18.2, 24.2, 27, 36.5, 45, 53.2, 55.1, 64, 70.1, 76.1),
+  ymax  = c(16.8, 22.5, 25, 34.8, 43, 50, 53.8, 62, 68.8, 74.8, 83),
+  label = c("Q. gravesii", "Q. (emoryi x gravesii)", "Q. (emoryi x gravesii) blobbier",
             "Q. emoryi", "Q. graciliformis", "Q. canbyi", "Q. miquihuaensis", 
             "Q. hypoleucoides", "Q. scytophylla", "Q. (gravesii x hypoleucoides)", "Q. tardifolia")
 )
@@ -52,9 +52,9 @@ class_segments <- tibble(
 # ymin / ymax define the vertical span; text is centered between them
 # This is used for annotations BETWEEN line segments
 free_text_blocks <- tibble(
-  ymin = c(14.8, 26, 44, 50.7, 52.0, 63, 84),
-  ymax = c(14.8, 26, 44, 50.7, 52.0, 63, 84),
-  label = c("Q. sp?", "Q. emoryi x ??", "Q. robusta", "Q. cf. miquihuanensis- autopista",
+  ymin = c(26, 44, 50.7, 52.0, 63, 84),
+  ymax = c(26, 44, 50.7, 52.0, 63, 84),
+  label = c("Q. emoryi x ??", "Q. robusta", "Q. cf. miquihuanensis- autopista",
             "Q. hypoxantha", "Q. aff hypoleucoides aff. sideoxyla", "Q. hypoxantha x Q. gravesii")
 )
 
@@ -87,10 +87,12 @@ p <- ggplot(df_long, aes(x = Q, y = factor(row_id, levels = unique(row_id)), fil
     plot.title    = element_text(size = 18, face = "bold"),
     plot.subtitle = element_text(size = 16),
     axis.text.y  = element_blank(),
+    axis.text.x = element_text(size = 12),
+    axis.title.x = element_text(size = 15, margin = margin(t = 7)),
     axis.ticks.y = element_blank(),
     panel.grid.major.y = element_blank(),
     panel.grid.minor = element_blank(),
-    plot.margin = margin(5.5, right_margin_mm, 5.5, 5.5)
+    plot.margin = margin(5.5, right_margin_mm, 5.5, 13)
   ) +
   coord_cartesian(clip = "off")
 
