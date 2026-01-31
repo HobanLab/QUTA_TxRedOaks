@@ -14,6 +14,7 @@ setwd(QUTA_TRO_wd)
 imageOut <- 
   '/home/akoontz/Documents/QUTA_TxRedOaks/Documentation/Images/ManuscriptDraft3/'
 
+# ---- %%% 2026-01-30 UPDATE %%% ----
 # %%% READ IN AND FORMAT DATA ----
 # Read in the VCF and convert it to a genind
 QUTA_Clust3_vcf <- read.vcfR('Clust3_seOnly/pop_R98/populations.snps.vcf')
@@ -22,19 +23,16 @@ QUTA_Clust3_genlight <- gl.compliance.check(QUTA_Clust3_genlight)
 # Get names and (cleaned) dets
 QUTA_Clust3_names <- QUTA_Clust3_genlight@ind.names
 QUTA_Clust3_dets <- 
-  as.factor(read.csv('Clust3_seOnly/pop_R98/Clust3_NamesAndDets.csv', header=TRUE)[,3])
+  as.factor(read.csv('Clust3_seOnly/pop_R98/Clust3_NamesAndDets.csv', header=TRUE)[,2])
 QUTA_Clust3_genlight@pop <- QUTA_Clust3_dets 
 
-# %%% 2026-01-16 UPDATE %%% ----
-# Removing individuals with unknown dets, two weird hybrids
-# (miquihuanensis- autopista and hypoxantha x gravesii), and miquihuaensis
-QUTA_Clust3_indsRemove <- c('SYST-MOR-0006540','SYST-MOR-0006541', 'SYST-MOR-0006542',
-                            'SYST-MOR-0006552','SYST-MOR-0006694','SYST-MOR-0006099',
-                            'SYST-MOR-0006654', 'SYST-MOR-0007328', 'SYST-MOR-0007329')
-# Removing scytophylla and one oddball canbyi
-QUTA_Clust3_indsRemove <- c(QUTA_Clust3_indsRemove, 'OAK-MOR-000896', 'OAK-MOR-000907', 'OAK-MOR-001178',
-                            'OAK-MOR-001234', 'OAK-UMN-000180', 'OAK-UMN-000268', 'SYST-MOR-0006484',
-                            'SYST-MOR-0007305')
+# %%% SUBSET INDIVIDUALS %%% ----
+# Removing hybrids (miquihuanensis- autopista ; hypoxantha x gravesii, hypo. aff sid.e), 
+# miquihuaensis, scytophylla, one oddball canbyi
+QUTA_Clust3_indsRemove <- 
+  c('SYST-MOR-0006099', 'SYST-MOR-0006654', 'SYST-MOR-0007328', 'SYST-MOR-0007329', 'SYST-MOR-0007280',
+    'OAK-MOR-000896', 'OAK-MOR-000907', 'OAK-MOR-001178','OAK-MOR-001234', 'OAK-UMN-000180',
+    'OAK-UMN-000268','SYST-MOR-0007305')
 # Subset genlight object
 QUTA_Clust3_genlight_Subset <- 
   QUTA_Clust3_genlight[!indNames(QUTA_Clust3_genlight) %in% QUTA_Clust3_indsRemove, ]
@@ -59,10 +57,11 @@ var_exp <- round(
 pc_labels <- paste0("PC", 1:length(var_exp), " (", var_exp, "%)")
 
 # %%% PLOTTING WITH LABELS ----
-# Specify Wong color palette
-wong_palette <- c(
-  "#000000", "#E69F00", "#56B4E9", "#009E73",
-  "#F0E442", "#0072B2", "#D55E00", "#CC79A7", "#882255"
+# Specify a colorblind friendly palatte, for 11 different colors
+palette_11 <- c(
+  "#000000", "#E69F00", "#56B4E9", "#009E73", "#F0E442",
+  "#0072B2", "#D55E00", "#CC79A7",
+  "#999999", "#882255", "#44AA99"
 )
 
 # Select one representative per taxon for labeling
@@ -79,7 +78,7 @@ pca_plot <- ggplot(pca_df, aes(x = PC1, y = PC2)) +
   ) +
   scale_color_manual(
     name = "Taxa",
-    values = wong_palette,
+    values = palette_11,
     guide = guide_legend(
       override.aes = list(
         shape = ifelse(
@@ -100,7 +99,7 @@ pca_plot <- ggplot(pca_df, aes(x = PC1, y = PC2)) +
   ) +
   labs(
     title = "Q. tardifolia and Texas Red Oaks",
-    subtitle = "67 individuals, 9,954 loci, R98",
+    subtitle = paste0(nInd(QUTA_Clust3_genlight_Subset)," individuals, 9,954 loci, R98"),
     x = pc_labels[1],
     y = pc_labels[2]
   ) +
@@ -110,8 +109,8 @@ pca_plot <- ggplot(pca_df, aes(x = PC1, y = PC2)) +
     size = 6,
     family = "mono",
     max.overlaps = Inf,
-    nudge_x = 0.11 * (max(pca_df$PC1) - min(pca_df$PC1)),
-    nudge_y = 0.11 * (max(pca_df$PC2) - min(pca_df$PC2)),
+    nudge_x = 0.07 * (max(pca_df$PC1) - min(pca_df$PC1)),
+    nudge_y = 0.07 * (max(pca_df$PC2) - min(pca_df$PC2)),
     force = 4,
     box.padding = 1.6,
     point.padding = 1.3,
@@ -156,15 +155,14 @@ final_plot <- ggdraw() +
   draw_plot(pca_plot) +
   draw_plot(
     scree_plot,
-    x = 0.03, y = 0.1,
+    x = 0.03, y = 0.05,
     width = 0.23, height = 0.23
   )
 
 final_plot
 
-# Generate the final plot, as PDF
-pdf(file = paste0(imageOut, "PCA_Fig3.pdf"), 
-    width = 14.5, height = 7.5)
+# Generate the final plot, as PNG
+png(file = paste0(imageOut, "PCA_Fig3.png"), width = 1200, height = 795)
 final_plot
 dev.off()
 
@@ -231,7 +229,7 @@ pca_plot <- ggplot(pca_df, aes(x = PC1, y = PC2)) +
   ) +
   labs(
     title = "PCA: Q. tardifolia and Texas Red Oaks (Complete)",
-    subtitle = "84 individuals, 9,954 loci, R98",
+    subtitle = paste0(nInd(QUTA_Clust3_genlight)," individuals, 9,954 loci, R98"),
     x = pc_labels[1],
     y = pc_labels[2]
   ) +
@@ -281,12 +279,11 @@ scree_plot <- ggplot(scree_df, aes(x = PC, y = Variance)) +
 # Combine PCA and inset scree plot
 final_plot <- ggdraw() +
   draw_plot(pca_plot) +
-  draw_plot(scree_plot, x = 0.03, y = 0.1, width = 0.23, height = 0.23)
+  draw_plot(scree_plot, x = 0.03, y = 0.05, width = 0.23, height = 0.23)
 final_plot
 
-# Generate the final plot, as PDF
-pdf(file = paste0(imageOut, "PCA_Fig3.pdf"), 
-    width = 14.5, height = 7.5)
+# Generate the final plot, as PNG
+png(file = paste0(imageOut, "PCA_FigS6.png"), width = 1200, height = 795)
 final_plot
 dev.off()
 
