@@ -12,7 +12,7 @@ QUTA_TRO_wd <- '/RAID1/QUTA_TX_RedOaks/Genotyping/SNP_Calling/Output/'
 setwd(QUTA_TRO_wd)
 # Specify image output directory
 imageOut <- 
-  '/home/akoontz/Documents/QUTA_TxRedOaks/Documentation/Images/ManuscriptDraft3/'
+  '/home/akoontz/Documents/QUTA_TxRedOaks/Documentation/Images/ManuscriptDraft_IJPS/'
 
 # ---- %%% 2026-01-30 UPDATE %%% ----
 # %%% READ IN AND FORMAT DATA ----
@@ -58,10 +58,16 @@ pc_labels <- paste0("PC", 1:length(var_exp), " (", var_exp, "%)")
 
 # %%% PLOTTING WITH LABELS ----
 # Specify a colorblind friendly palatte, for 11 different colors
+# palette_11 <- c(
+#   "#000000", "#E69F00", "#56B4E9", "#009E73", "#F0E442",
+#   "#0072B2", "#D55E00", "#CC79A7",
+#   "#999999", "#882255", "#44AA99"
+# )
+
 palette_11 <- c(
-  "#000000", "#E69F00", "#56B4E9", "#009E73", "#F0E442",
-  "#0072B2", "#D55E00", "#CC79A7",
-  "#999999", "#882255", "#44AA99"
+  "#000000", "#56B4E9", "#D55E00", "#CC79A7", "#F0E442",
+  "#0072B2", "#7FBF7B", "#009E73",
+  "#882255", "#999999", "#E69F00"
 )
 
 # Select one representative per taxon for labeling
@@ -98,7 +104,7 @@ pca_plot <- ggplot(pca_df, aes(x = PC1, y = PC2)) +
     guide = "none"
   ) +
   labs(
-    title = "Q. tardifolia and Texas Red Oaks",
+    title = "Q. tardifolia and Texas Red Oaks (Dataset #2)",
     subtitle = paste0(nInd(QUTA_Clust3_genlight_Subset)," individuals, 9,954 loci, R98"),
     x = pc_labels[1],
     y = pc_labels[2]
@@ -158,11 +164,10 @@ final_plot <- ggdraw() +
     x = 0.03, y = 0.05,
     width = 0.23, height = 0.23
   )
-
 final_plot
 
-# Generate the final plot, as PNG
-png(file = paste0(imageOut, "PCA_Fig3.png"), width = 1200, height = 795)
+# Generate the final plot, as JPEG
+jpeg(file = paste0(imageOut, "Fig3_PCA.jpeg"), width = 1200, height = 795)
 final_plot
 dev.off()
 
@@ -228,7 +233,7 @@ pca_plot <- ggplot(pca_df, aes(x = PC1, y = PC2)) +
     guide = "none"
   ) +
   labs(
-    title = "PCA: Q. tardifolia and Texas Red Oaks (Complete)",
+    title = "Q. tardifolia and Texas Red Oaks (Dataset #2, Complete)",
     subtitle = paste0(nInd(QUTA_Clust3_genlight)," individuals, 9,954 loci, R98"),
     x = pc_labels[1],
     y = pc_labels[2]
@@ -283,7 +288,7 @@ final_plot <- ggdraw() +
 final_plot
 
 # Generate the final plot, as PNG
-png(file = paste0(imageOut, "PCA_FigS6.png"), width = 1200, height = 795)
+jpeg(file = paste0(imageOut, "FigS7_PCA-Complete.jpeg"), width = 1200, height = 795)
 final_plot
 dev.off()
 

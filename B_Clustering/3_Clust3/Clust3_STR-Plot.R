@@ -16,15 +16,15 @@ QUTA_Clust3_inputCSV <-
   "/home/akoontz/Documents/QUTA_TxRedOaks/Code/B_Clustering/3_Clust3/Clust3_K4_Qmat_CleanDets.csv"
 # Variable file path: directory to save image to
 QUTA_Clust3_outputPlotDir <- 
-  "/home/akoontz/Documents/QUTA_TxRedOaks/Documentation/Images/ManuscriptDraft3/"
+  "/home/akoontz/Documents/QUTA_TxRedOaks/Documentation/Images/ManuscriptDraft_IJPS/"
 plot_title <- "STRUCTURE Results (K4)"  
 plot_subtitle <- "R98, 84 individuals, 9,954 loci"
 
 # Specify plotting colors
 cluster_colors <- c(
-  "#08306B", # dark blue
-  "#6BAED6", # light blue
-  "#A1D99B", # light green
+  "#7fbf7b", # light green (hypoleucoides)
+  "#af8dc3", # violet (gravesii)
+  "#56B4E9", # lighter blue
   "#006D2C" # dark green
 )
 
@@ -34,7 +34,7 @@ text_x    <- 1.008         # x position of the labels (just to the right)
 # Specify text size for labels
 labelSize <- 5
 # Specify right hand margin
-right_margin_mm <- 130 # size of free text placed between segments
+right_margin_mm <- 143 # size of free text placed between segments
 
 # ---- SPECIFY CLASSIFICATION SEGMENTS ----
 # ymin / ymax are row numbers (after ordering) defining each block
@@ -55,7 +55,7 @@ free_text_blocks <- tibble(
   ymin = c(26, 44, 50.7, 52.0, 63, 84),
   ymax = c(26, 44, 50.7, 52.0, 63, 84),
   label = c("Q. emoryi x ??", "Q. robusta", "Q. cf. miquihuanensis- autopista",
-            "Q. hypoxantha", "Q. aff hypoleucoides aff. sideoxyla", "Q. hypoxantha x Q. gravesii")
+            "Q. hypoxantha", "Q. aff. hypoleucoides aff. sideroxyla", "Q. hypoxantha x Q. gravesii")
 )
 
 # ---------------- READ & PREP DATA ----------------
@@ -129,7 +129,7 @@ p <- p +
   )
 print(p)
 
-# Save the image to a PNG
-png(file = paste0(QUTA_Clust3_outputPlotDir, "Fig2_STR_K4.png"), width = 1200, height = 795)
+# Save the image to a JPEG
+jpeg(file = paste0(QUTA_Clust3_outputPlotDir, "Fig2_STR_K4.jpeg"), width = 1200, height = 795)
 print(p)
 dev.off()

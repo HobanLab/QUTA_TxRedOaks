@@ -16,7 +16,7 @@ QUTA_mappingDir <- '/home/akoontz/Documents/QUTA_TxRedOaks/Code/D_Mapping/'
 setwd(QUTA_mappingDir)
 # Specify image output directory
 imageOut <- 
-  '/home/akoontz/Documents/QUTA_TxRedOaks/Documentation/Images/GravHypoTar-RangeMaps_20251223/'
+  '/home/akoontz/Documents/QUTA_TxRedOaks/Documentation/Images/ManuscriptDraft_IJPS/'
 # Specify width and length dimensions for images generated
 imageWidth <- 1300
 imageLength <- 700
@@ -296,11 +296,10 @@ final_plot <- plot_grid(
   ncol = 2,
   rel_widths = c(5.2, 0.8)
 )
-
 final_plot
 
 # Generate the final plot, as PDF
-png(file = paste0(imageOut, "GravHypoTar_Hillshade_RangeMap.png"), 
+jpeg(file = paste0(imageOut, "GravHypoTar_Hillshade_RangeMap.jpeg"), 
     width = imageWidth, height = imageLength)
 final_plot
 dev.off()
@@ -465,11 +464,10 @@ final_plot <- plot_grid(
   ncol = 2,
   rel_widths = c(5.2, 0.8)
 )
-
 final_plot
 
 # Generate the final plot, as PDF
-png(file = paste0(imageOut, "GravHypoTar_DEM_RangeMap.png"), 
+jpeg(file = paste0(imageOut, "Fig1_GravHypoTar_RangeMap.jpeg"), 
     width = imageWidth, height = imageLength)
 final_plot
 dev.off()

@@ -20,6 +20,10 @@ library(report)
 GravHypoTar_Dir <- 
   '/RAID1/QUTA_TX_RedOaks/Genotyping/SNP_Calling/Output/Clust3_seOnly/GravHypoTar2_R98'
 setwd(GravHypoTar_Dir)
+# Variable file path: directory to save images to
+outputPlotDir <- 
+  "/home/akoontz/Documents/QUTA_TxRedOaks/Documentation/Images/ManuscriptDraft_IJPS/"
+
 # T-TEST ----
 # Specify the filepath to the relevant VCF file, and read it in
 GravHypoTar_Complete <- gl.read.vcf('populations.snps.vcf')
@@ -66,7 +70,7 @@ report(tTest_TARDvHYPO)
 library(triangulaR)
 library(vcfR)
 
-# Read in the VCF file generated for 
+# Read in the VCF file generated for heterozygosity comparisons
 GHT_vcf <- read.vcfR('populations.snps.vcf')
 # Read in a popmap, which is a data.frame with two columns: 'id' and 'pop'
 GHT_popmap <- read.table('GravHypoTar2_popList.csv', header = TRUE, sep=',')
@@ -94,8 +98,14 @@ tri_plot_75 <- tri_plot_75 + theme(legend.position = c(0.85, 0.7)) +
     labels = c("Q. gravesii", "Q. hypoleucoides", "Q. tardifolia")
   )
 # Print the allele frequency threshold value and the number of differentiated sites
-tri_plot_75 + annotate('text', x=0.1, y=0.9, label=paste0('Allele frequency threshold: ', alleleFreqThresh))+ 
+tri_plot_75 <- tri_plot_75 + 
+  annotate('text', x=0.1, y=0.9, label=paste0('Allele frequency threshold: ', alleleFreqThresh)) + 
   annotate('text', x=0.1, y=0.8, label=paste0('Number of sites: ', nrow(GHT_vcf_diff_0.75@fix)))
+print(tri_plot_75)
+# Save the image to a JPEG
+jpeg(file = paste0(outputPlotDir, "FigS8_triPlot_75.jpeg"), width = 1115, height = 389)
+print(tri_plot_75)
+dev.off()
 
 # Repeat the process, but using a higher allele frequency threshold (0.9)
 alleleFreqThresh <- 0.9
@@ -114,8 +124,14 @@ tri_plot_90 <- tri_plot_90 + theme(legend.position = c(0.85, 0.7)) +
     labels = c("Q. gravesii", "Q. hypoleucoides", "Q. tardifolia")
   )
 # Print the allele frequency threshold value and the number of differentiated sites
-tri_plot_90 + annotate('text', x=0.1, y=0.9, label=paste0('Allele frequency threshold: ', alleleFreqThresh)) + 
+tri_plot_90 <- tri_plot_90 + 
+  annotate('text', x=0.1, y=0.9, label=paste0('Allele frequency threshold: ', alleleFreqThresh)) + 
   annotate('text', x=0.1, y=0.8, label=paste0('Number of sites: ', nrow(GHT_vcf_diff_0.9@fix)))
+print(tri_plot_90)
+# Save the image to a JPEG
+jpeg(file = paste0(outputPlotDir, "Fig5_triPlot_90.jpeg"), width = 1115, height = 389)
+print(tri_plot_90)
+dev.off()
 
 # FILE CONVERSION STEPS, FOR NEWHYBRIDS ANALYSIS
 # The commands below are used to convert the VCF of 211 fixed differences to a
@@ -144,8 +160,14 @@ tri_plot_100 <- tri_plot_100 + theme(legend.position = c(0.85, 0.7)) +
     labels = c("Q. gravesii", "Q. hypoleucoides", "Q. tardifolia")
   )
 # Print the allele frequency threshold value and the number of differentiated sites
-tri_plot_100 + annotate('text', x=0.1, y=0.9, label=paste0('Allele frequency threshold: ', alleleFreqThresh))+ 
+tri_plot_100 <- tri_plot_100 + 
+  annotate('text', x=0.1, y=0.9, label=paste0('Allele frequency threshold: ', alleleFreqThresh)) + 
   annotate('text', x=0.1, y=0.8, label=paste0('Number of sites: ', nrow(GHT_vcf_diff_1@fix)))
+print(tri_plot_100)
+# Save the image to a JPEG
+jpeg(file = paste0(outputPlotDir, "FigS9_triPlot_100.jpeg"), width = 1115, height = 389)
+print(tri_plot_100)
+dev.off()
 
 # FILE CONVERSION STEPS, FOR NEWHYBRIDS ANALYSIS
 # The commands below are used to convert the VCF of 211 fixed differences to a
@@ -290,41 +312,3 @@ tri_plot <- triangulaR::triangle.plot(GHT_hybridIndex, colors=GHT_cols, cex=3)
 tri_plot + annotate('text', x=0.8, y=0.9, label=paste0('Allele frequency threshold: ', alleleFreqThresh)) + 
   annotate('text', x=0.8, y=0.8, label=paste0('Number of sites: ', nrow(GHT_vcf_diff@fix))) +
   guides(color=guide_legend(title="Taxa")) + theme(legend.position = c(0.5,0.3))
-
-# # TRIANGLE PLOTS, FOR CONFERENCE PRESENTATION ----
-# # Building triangle plots, which are plots of interclass heterozygosity versus hybrid indices,
-# # and are meant to help distinguish admixture patterns due to hybridization from isolation by distance.
-# library(triangulaR)
-# library(vcfR)
-# 
-# # Read in the VCF file generated for 
-# GHT_vcf <- read.vcfR('populations.snps.vcf')
-# # Read in a popmap, which is a data.frame with two columns: 'id' and 'pop'
-# GHT_popmap <- read.table('GravHypoTar_popList.csv', header = TRUE, sep=',')
-# # Update names in popmap
-# # colnames(GHT_popmap) <- c('id', 'Taxa')
-# # GHT_popmap$id <- gsub('GRAV','gravesii',GHT_popmap$id)
-# # GHT_popmap$id <- gsub('HYPO','hypoleucoides',GHT_popmap$id)
-# # GHT_popmap$id <- gsub('TARD','tardifolia',GHT_popmap$id)
-# # Specify a value for the allele frequency difference threshold (only alleles with frequency differences
-# # of this amount or greater in parental groups are considered for calculating interclass heterozygosity)
-# alleleFreqThresh <- 0.9
-# # Create a new vcfR object composed only of sites above the given allele frequency difference threshold
-# GHT_vcf_diff <- 
-#   alleleFreqDiff(vcfR=GHT_vcf, pm=GHT_popmap, p1="GRAV", p2="HYPO", difference=alleleFreqThresh)
-# # GHT_vcf_diff <- 
-# #   alleleFreqDiff(vcfR=GHT_vcf, pm=GHT_popmap, p1="gravesii", p2="hypoleucoides", difference=alleleFreqThresh)
-# # Calculate hybrid index and heterozygosity for each sample. Values are returned in a data.frame
-# GHT_hybridIndex <- hybridIndex(vcfR=GHT_vcf_diff, pm=GHT_popmap, p1="GRAV", p2="HYPO")
-# # GHT_hybridIndex <- hybridIndex(vcfR=GHT_vcf_diff, pm=GHT_popmap, p1="gravesii", p2="hypoleucoides")
-# 
-# # PLOTTING
-# # Specify a vector of colors
-# GHT_cols <- c("#af8dc3", "#7fbf7b", "#bababa", "#878787", "#762a83", "#1b7837")
-# # Generate a triangle plot
-# tri_plot <- triangulaR::triangle.plot(GHT_hybridIndex, colors=GHT_cols, cex=3)
-# # Print the allele frequency threshold value and the number of differentiated sites
-# tri_plot + annotate('text', x=0.8, y=0.9, label=paste0('Allele frequency threshold: ', alleleFreqThresh)) + 
-#   annotate('text', x=0.8, y=0.8, label=paste0('Number of sites: ', nrow(GHT_vcf_diff@fix))) +
-#   guides(color=guide_legend(title="Taxa")) + theme(legend.position = c(0.5,0.3))
-# 
