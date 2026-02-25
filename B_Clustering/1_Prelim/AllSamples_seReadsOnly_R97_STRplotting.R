@@ -165,8 +165,8 @@ QUTA_all_sampleNames <-
 # Reformat sample names as a vector
 QUTA_all_sampleNames <- unname(unlist(QUTA_all_sampleNames))
 
-# Save the image to a JPEG
-jpeg(file = paste0(outputPlotDir, "FigS3_Clust1-STR_K2-6.jpeg"), width = 1200, height = 795)
+# Save the image to a TIFF
+tiff(file = paste0(outputPlotDir, "FigS3_Clust1-STR_K2-6.tiff"), width = 1200, height = 795)
 # Plot K values 2 through 6
 Xpos <- Plot.AllK(QUTA_allReadsSEonly_clumppDir, Ks=2:6, QUTA.colors, sampleNames = QUTA_all_sampleNames, 
                               majorClust = TRUE, popNamesPresent = FALSE)
@@ -175,8 +175,8 @@ text(x=Xpos, y=-0.013, srt=87, adj=1, xpd=TRUE, labels=QUTA_all_sampleNames, cex
 # Close plotting window
 dev.off()
 
-# Save the image to a JPEG
-jpeg(file = paste0(outputPlotDir, "FigS4_Clust1-STR_K7-11.jpeg"), width = 1200, height = 795)
+# Save the image to a TIFF
+tiff(file = paste0(outputPlotDir, "FigS4_Clust1-STR_K7-11.tiff"), width = 1200, height = 795)
 # Plot K values 7 through 11
 Xpos <- Plot.AllK(QUTA_allReadsSEonly_clumppDir, Ks=7:11, QUTA.colors, sampleNames = QUTA_all_sampleNames, 
               majorClust = TRUE, popNamesPresent = FALSE)

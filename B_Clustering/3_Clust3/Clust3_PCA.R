@@ -166,8 +166,8 @@ final_plot <- ggdraw() +
   )
 final_plot
 
-# Generate the final plot, as JPEG
-jpeg(file = paste0(imageOut, "Fig3_PCA.jpeg"), width = 1200, height = 795)
+# Generate the final plot, as TIFF
+tiff(file = paste0(imageOut, "Fig3_PCA.tiff"), width = 1200, height = 795)
 final_plot
 dev.off()
 
@@ -287,8 +287,8 @@ final_plot <- ggdraw() +
   draw_plot(scree_plot, x = 0.03, y = 0.05, width = 0.23, height = 0.23)
 final_plot
 
-# Generate the final plot, as PNG
-jpeg(file = paste0(imageOut, "FigS7_PCA-Complete.jpeg"), width = 1200, height = 795)
+# Generate the final plot, as TIFF
+tiff(file = paste0(imageOut, "FigS7_PCA-Complete.tiff"), width = 1200, height = 795)
 final_plot
 dev.off()
 

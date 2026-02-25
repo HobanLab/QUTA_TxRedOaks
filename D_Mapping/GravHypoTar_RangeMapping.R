@@ -298,8 +298,8 @@ final_plot <- plot_grid(
 )
 final_plot
 
-# Generate the final plot, as PDF
-jpeg(file = paste0(imageOut, "GravHypoTar_Hillshade_RangeMap.jpeg"), 
+# Generate the final plot, as TIFF
+tiff(file = paste0(imageOut, "GravHypoTar_Hillshade_RangeMap.tiff"), 
     width = imageWidth, height = imageLength)
 final_plot
 dev.off()
@@ -466,8 +466,8 @@ final_plot <- plot_grid(
 )
 final_plot
 
-# Generate the final plot, as PDF
-jpeg(file = paste0(imageOut, "Fig1_GravHypoTar_RangeMap.jpeg"), 
+# Generate the final plot, as TIFF
+tiff(file = paste0(imageOut, "Fig1_GravHypoTar_RangeMap.tiff"), 
     width = imageWidth, height = imageLength)
 final_plot
 dev.off()

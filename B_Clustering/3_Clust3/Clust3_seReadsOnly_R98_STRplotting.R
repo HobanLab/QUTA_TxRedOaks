@@ -259,8 +259,8 @@ clust3_labelPositions_multipleK <- c(9, 26, 39, 53, 64.2, 71, 78.4, 84.2)
 clust3_tickMarks_multipleK <- c(0,15.8,30.4,46.2,56.8,66.2,72.6,78.8)
 
 # PLOT K VALUES 2 THROUGH 4
-# Save the image to a JPEG
-jpeg(file = paste0(outputPlotDir, "FigS5_Clust2-STR_K2-4.jpeg"), width = 1200, height = 795)
+# Save the image to a TIFF
+tiff(file = paste0(outputPlotDir, "FigS5_Clust2-STR_K2-4.tiff"), width = 1200, height = 795)
 # Call plot command
 Xpos <- Plot.AllK(QUTA_clust3_clumppDir, Ks=2:4, QUTA_colors, sampleNames = QUTA_clust3_sampleNames, 
                   majorClust = TRUE, tickMarks=clust3_tickMarks_multipleK, popNamesPresent = FALSE)
@@ -273,8 +273,8 @@ text(x=Xpos, y=-0.013, srt=87, adj=1, xpd=TRUE, labels=QUTA_clust3_sampleNames, 
 dev.off()
 
 # PLOT K VALUES 5 THROUGH 7
-# Save the image to a JPEG
-jpeg(file = paste0(outputPlotDir, "FigS6_Clust2-STR_K5-7.jpeg"), width = 1200, height = 795)
+# Save the image to a TIFF
+tiff(file = paste0(outputPlotDir, "FigS6_Clust2-STR_K5-7.tiff"), width = 1200, height = 795)
 # Call plot command
 Xpos <- Plot.AllK(QUTA_clust3_clumppDir, Ks=5:7, QUTA_colors, sampleNames = QUTA_clust3_sampleNames, 
                   majorClust = TRUE, tickMarks=clust3_tickMarks_multipleK, popNamesPresent = FALSE)

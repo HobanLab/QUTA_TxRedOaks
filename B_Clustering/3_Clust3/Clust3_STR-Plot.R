@@ -129,7 +129,7 @@ p <- p +
   )
 print(p)
 
-# Save the image to a JPEG
-jpeg(file = paste0(QUTA_Clust3_outputPlotDir, "Fig2_STR_K4.jpeg"), width = 1200, height = 795)
+# Save the image to a TIFF
+tiff(file = paste0(QUTA_Clust3_outputPlotDir, "Fig2_STR_K4.tiff"), width = 1200, height = 795)
 print(p)
 dev.off()

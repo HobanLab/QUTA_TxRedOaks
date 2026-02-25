@@ -102,8 +102,8 @@ tri_plot_75 <- tri_plot_75 +
   annotate('text', x=0.1, y=0.9, label=paste0('Allele frequency threshold: ', alleleFreqThresh)) + 
   annotate('text', x=0.1, y=0.8, label=paste0('Number of sites: ', nrow(GHT_vcf_diff_0.75@fix)))
 print(tri_plot_75)
-# Save the image to a JPEG
-jpeg(file = paste0(outputPlotDir, "FigS8_triPlot_75.jpeg"), width = 1115, height = 389)
+# Save the image to a TIFF
+tiff(file = paste0(outputPlotDir, "FigS8_triPlot_75.tiff"), width = 1115, height = 389)
 print(tri_plot_75)
 dev.off()
 
@@ -128,8 +128,8 @@ tri_plot_90 <- tri_plot_90 +
   annotate('text', x=0.1, y=0.9, label=paste0('Allele frequency threshold: ', alleleFreqThresh)) + 
   annotate('text', x=0.1, y=0.8, label=paste0('Number of sites: ', nrow(GHT_vcf_diff_0.9@fix)))
 print(tri_plot_90)
-# Save the image to a JPEG
-jpeg(file = paste0(outputPlotDir, "Fig5_triPlot_90.jpeg"), width = 1115, height = 389)
+# Save the image to a TIFF
+tiff(file = paste0(outputPlotDir, "Fig5_triPlot_90.tiff"), width = 1115, height = 389)
 print(tri_plot_90)
 dev.off()
 
@@ -164,8 +164,8 @@ tri_plot_100 <- tri_plot_100 +
   annotate('text', x=0.1, y=0.9, label=paste0('Allele frequency threshold: ', alleleFreqThresh)) + 
   annotate('text', x=0.1, y=0.8, label=paste0('Number of sites: ', nrow(GHT_vcf_diff_1@fix)))
 print(tri_plot_100)
-# Save the image to a JPEG
-jpeg(file = paste0(outputPlotDir, "FigS9_triPlot_100.jpeg"), width = 1115, height = 389)
+# Save the image to a TIFF
+tiff(file = paste0(outputPlotDir, "FigS9_triPlot_100.tiff"), width = 1115, height = 389)
 print(tri_plot_100)
 dev.off()
 
