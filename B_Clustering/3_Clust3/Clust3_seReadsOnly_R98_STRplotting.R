@@ -687,7 +687,7 @@ Ypos <- Plot.K_H(QUTA_GravHypoTar_clumppDir, K=2, QUTA_colors, majorClust=TRUE,
                  popNamesPresent=FALSE, sampleNames = QUTA_GravHypoTar_sampleNames, 
                  showSampleNames = TRUE, hFlag=TRUE, barWidth = 2, removeRows = samplesRemoved)
 # Add title
-title('QUTA_TxRedOaks: Hybrid vs. Parental Dataset: K=2', line = 7.4)
+title('Hybrid vs. Parental Dataset: K=2', line = 7.4)
 mtext('R98, 10,000 loci', line=6.2)
 # Plot tick marks (horizontally)
 axis(4, at=GravHypoTar_tickMarks_H, labels = FALSE, lwd.ticks = 2.5, tck=-0.03, xpd=TRUE)
