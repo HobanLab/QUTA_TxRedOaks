@@ -103,7 +103,7 @@ tri_plot_75 <- tri_plot_75 +
   annotate('text', x=0.1, y=0.8, label=paste0('Number of sites: ', nrow(GHT_vcf_diff_0.75@fix)))
 print(tri_plot_75)
 # Save the image to a TIFF
-tiff(file = paste0(outputPlotDir, "FigS8_triPlot_75.tiff"), width = 1115, height = 389)
+tiff(file = paste0(outputPlotDir, "FigS11_triPlot_75.tiff"), width = 1115, height = 389)
 print(tri_plot_75)
 dev.off()
 
@@ -165,7 +165,7 @@ tri_plot_100 <- tri_plot_100 +
   annotate('text', x=0.1, y=0.8, label=paste0('Number of sites: ', nrow(GHT_vcf_diff_1@fix)))
 print(tri_plot_100)
 # Save the image to a TIFF
-tiff(file = paste0(outputPlotDir, "FigS9_triPlot_100.tiff"), width = 1115, height = 389)
+tiff(file = paste0(outputPlotDir, "FigS12_triPlot_100.tiff"), width = 1115, height = 389)
 print(tri_plot_100)
 dev.off()
 
