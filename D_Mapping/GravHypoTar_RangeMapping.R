@@ -1,7 +1,3 @@
-# %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-# %%% GRAVESII AND HYPOLEUCOIDES RANGE MAPS %%%
-# %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
 # This script is used to make a map of the ranges of two of the species in
 # the study (Q. gravesii and hypoleucoides). Overlaid on this map are points
 # corresponding to the samples included in the study. Two versions of the map
@@ -16,7 +12,7 @@ QUTA_mappingDir <- '/home/akoontz/Documents/QUTA_TxRedOaks/Code/D_Mapping/'
 setwd(QUTA_mappingDir)
 # Specify image output directory
 imageOut <- 
-  '/home/akoontz/Documents/QUTA_TxRedOaks/Documentation/Images/ManuscriptDraft_IJPS/revisedSubmission/'
+  '/home/akoontz/Documents/QUTA_TxRedOaks/Documentation/Images/ManuscriptDraft_IJPS/'
 # Specify width and length dimensions for images generated
 imageWidth <- 1300
 imageLength <- 700
@@ -124,9 +120,9 @@ sample_colors <- c(
   hybrid = "chartreuse3"
 )
 
-# Define overlap inset bounding box (lon: 104.5–103.2°W, lat: 30.4–30.95°N)
+# Define overlap inset bounding box (lon: 104.4–103.4°W, lat: 30.4–30.95°N)
 overlap_bbox <- st_bbox(
-  c(xmin = -104.5, xmax = -103.2, ymin = 30.4, ymax = 30.95),
+  c(xmin = -104.4, xmax = -103.4, ymin = 30.4, ymax = 30.95),
   crs = st_crs(4326)
 )
 overlap_bbox_sfc <- st_as_sfc(overlap_bbox)
@@ -181,7 +177,8 @@ main_map <- ggplot() +
   # Use specified colors
   scale_color_manual(
     values = sample_colors,
-    name = "Taxon"
+    labels = c("Q. gravesii", "Q. hypoleucoides", "Q. tardifolia"),
+    name = "Sampling locations"
   ) +
   # Customize plotting characters for different taxa
   scale_shape_manual(
@@ -190,7 +187,8 @@ main_map <- ggplot() +
       hypoleucoides = 17,   # filled triangle
       hybrid = 12            # square
     ),
-    name = "Taxon"
+    labels = c("Q. gravesii", "Q. hypoleucoides", "Q. tardifolia"),
+    name = "Sampling locations"
   ) +
   # Box on main map highlighting the overlap inset area
   geom_sf(
@@ -209,7 +207,7 @@ main_map <- ggplot() +
   theme(
     panel.grid = element_blank()
   ) +
-  # Adjust spacing of the legends, bringing them closer to the main map
+  # Legend theme — individual legends will be composed manually in the layout
   theme(
     legend.position = "right",
     legend.box = "vertical",
@@ -220,13 +218,18 @@ main_map <- ggplot() +
     legend.box.background = element_blank(),
     legend.key = element_blank()
   ) +
-  # Increase sizes of points in the legend
+  # Order legends: species range first, sampling locations second
   guides(
-    shape = guide_legend(override.aes = list(
-      size = 5,
-      stroke = 1.2,
-      color = c("darkred", "darkblue", "darkgreen")
-    ))
+    fill = guide_legend(order = 1),
+    shape = guide_legend(
+      order = 2,
+      override.aes = list(
+        size = 5,
+        stroke = 1.2,
+        color = c("darkred", "darkblue", "darkgreen")
+      )
+    ),
+    color = guide_legend(order = 2)
   )
 
 # Adjust text sizes, in different parts of the figure
@@ -315,42 +318,129 @@ overlap_inset_map <- ggplot() +
     values = c(gravesii = 16, hypoleucoides = 17, hybrid = 12),
     name = "Taxon"
   ) +
-  coord_sf(xlim = c(-104.5, -103.2), ylim = c(30.4, 30.95)) +
+  coord_sf(xlim = c(-104.4, -103.4), ylim = c(30.4, 30.95)) +
+  # Show only every other tick label on both axes
+  scale_x_continuous(breaks = seq(-104.4, -103.4, by = 0.2),
+                     labels = function(x) ifelse(seq_along(x) %% 2 == 1, x, "")
+  ) +
+  scale_y_continuous(breaks = seq(30.4, 30.95, by = 0.1),
+                     labels = function(x) ifelse(seq_along(x) %% 2 == 1, x, "")
+  ) +
   labs(x = NULL, y = NULL) +
   theme_bw() +
   theme(
     panel.grid = element_blank(),
     legend.position = "none",
-    axis.text.x = element_text(size = 9),
-    axis.text.y = element_text(size = 9),
+    axis.text.x = element_text(size = 13),
+    axis.text.y = element_text(size = 13),
     panel.border = element_rect(color = "black", fill = NA, linewidth = 0.8),
     plot.margin = margin(t = 4, r = 5, b = 5, l = 5)
   )
 
-# Extract the legend from the main map
-legend_grob <- get_legend(main_map)
+# --- Extract legends ---
+# Main map without any legend (for the final plot)
 main_map_nolegend <- main_map +
   theme(
     legend.position = "none",
     plot.margin = margin(t = 4, r = 5, b = 5, l = 5)
   )
 
-# Build the right column: legend on top, overlap inset in the middle,
-# locator inset at the bottom — all stacked in a single column
+# Combined Species range + Sampling locations legend.
+# Both are in a single ggplot (no DEM / no ggnewscale) so ggplot2 aligns
+# the two legend sections flush with each other automatically.
+combined_legend_plot <- ggplot() +
+  geom_sf(
+    data  = ranges_crop,
+    aes(fill = species),
+    color = "black",
+    alpha = 0.35
+  ) +
+  scale_fill_manual(
+    values = c(
+      "Quercus gravesii"      = "firebrick3",
+      "Quercus hypoleucoides" = "steelblue3"
+    ),
+    name = "Species range"
+  ) +
+  geom_sf(
+    data = samples_sf,
+    aes(shape = Taxon, color = Taxon)
+  ) +
+  scale_color_manual(
+    values = sample_colors,
+    labels = c("Q. gravesii", "Q. hypoleucoides", "Q. tardifolia"),
+    name   = "Sampling locations"
+  ) +
+  scale_shape_manual(
+    values = c(gravesii = 16, hypoleucoides = 17, hybrid = 12),
+    labels = c("Q. gravesii", "Q. hypoleucoides", "Q. tardifolia"),
+    name   = "Sampling locations"
+  ) +
+  guides(
+    fill  = guide_legend(order = 1),
+    shape = guide_legend(
+      order = 2,
+      override.aes = list(
+        size   = 5,
+        stroke = 1.2,
+        color  = c("darkred", "darkblue", "darkgreen")
+      )
+    ),
+    color = guide_legend(order = 2)
+  ) +
+  theme_bw() +
+  theme(
+    legend.title    = element_text(size = 14),
+    legend.text     = element_text(size = 13),
+    legend.key      = element_blank(),
+    legend.box      = "vertical",
+    legend.spacing.y = unit(5, "pt")
+  )
+
+legend_combined <- get_legend(combined_legend_plot)
+
+# Elevation legend (separate, to appear to the right)
+legend_elev <- get_legend(
+  ggplot(data = dem_df) +
+    geom_raster(aes(lon, lat, fill = elevation), alpha = 0.8) +
+    scale_fill_gradientn(
+      colors = c("grey95", "grey80", "grey60", "grey40"),
+      name   = "Elevation (m)"
+    ) +
+    theme_bw() +
+    theme(
+      legend.title = element_text(size = 14),
+      legend.text  = element_text(size = 13)
+    )
+)
+
+# Compose: combined discrete legend on the left, elevation bar on the right
+legend_panel <- plot_grid(
+  legend_combined,
+  legend_elev,
+  ncol       = 2,
+  rel_widths = c(1.4, 0.7)
+)
+
+# Stack legend panel, overlap inset, and locator inset vertically in right column
 right_column <- plot_grid(
-  legend_grob,
+  legend_panel,
   overlap_inset_map,
   inset_map,
   ncol = 1,
-  rel_heights = c(1.6, 1.4, 1)
+  rel_heights = c(1.2, 2.4, 1.4)
 )
+
+# Shift right column left (small left margin) and add breathing room on far right
+right_column <- right_column +
+  theme(plot.margin = margin(t = 0, r = 20, b = 0, l = -15))
 
 # Combine main map (left) and right column
 final_plot <- plot_grid(
   main_map_nolegend,
   right_column,
   ncol = 2,
-  rel_widths = c(1.2, 1)
+  rel_widths = c(3.2, 1)
 )
 final_plot
 
